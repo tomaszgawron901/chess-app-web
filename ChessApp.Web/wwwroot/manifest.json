@@ -1,6 +1,6 @@
 {
-  "name": "ChessWebApp",
-  "short_name": "ChessWebApp",
+  "name": "ChessApp.Web",
+  "short_name": "ChessApp.Web",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",

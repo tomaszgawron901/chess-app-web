@@ -4,3 +4,8 @@
 
 /.vs
 /ChessWebApp/obj
+/ChessApp.Web/bin
+/ChessApp.Web/obj
+/ChessBoardComponents/obj
+/ChessApp.Api/obj
+/ChessApp.Api/bin
