@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessApp.Web", "ChessApp.We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessApp.Api", "ChessApp.Api\ChessApp.Api.csproj", "{B01F8C3D-8CFB-49E9-B538-C4A5C7BCC258}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessWebAppComponents", "ChessWebAppComponents\ChessWebAppComponents.csproj", "{45A0ECE5-3D25-4A4C-A697-A01450171A5C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,10 +41,6 @@ Global
 		{B01F8C3D-8CFB-49E9-B538-C4A5C7BCC258}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B01F8C3D-8CFB-49E9-B538-C4A5C7BCC258}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B01F8C3D-8CFB-49E9-B538-C4A5C7BCC258}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45A0ECE5-3D25-4A4C-A697-A01450171A5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45A0ECE5-3D25-4A4C-A697-A01450171A5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45A0ECE5-3D25-4A4C-A697-A01450171A5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45A0ECE5-3D25-4A4C-A697-A01450171A5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
