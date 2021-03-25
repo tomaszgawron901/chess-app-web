@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ChessApp.Web.Models
+namespace ChessApp.Web.Enums
 {
-    public class GameOptions
+    public enum Side
     {
+        Random,
+        White,
+        Black,
     }
 }

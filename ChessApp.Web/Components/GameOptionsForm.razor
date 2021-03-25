@@ -1,0 +1,44 @@
+﻿@inherits GameOptionsFormBase
+
+<EditForm Model=@GameOptions class="input-group mb-3">
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">GameVarient</span>
+        </div>
+        <InputSelect class="custom-select" @bind-Value=GameOptions.GameVarient>
+            <option value=@GameVarient.Standard>Standard</option>
+        </InputSelect>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Seconds per side</span>
+        </div>
+        <InputNumber class="form-control" @bind-Value=GameOptions.SecondsPerSide ParsingErrorMessage="Must be an integer value" />
+    </div>
+
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Increment in seconds</span>
+        </div>
+        <InputNumber class="form-control" @bind-Value=GameOptions.IncrementInSeconds ParsingErrorMessage="Must be an integer value" />
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Side</span>
+        </div>
+        <InputSelect class="custom-select" @bind-Value=GameOptions.Side>
+            <option value=@Side.White>White</option>
+            <option value=@Side.Black>Black</option>
+            <option value=@Side.Random>Random</option>
+        </InputSelect>
+    </div>
+
+    <button type="button" class="btn btn-outline-primary" @onclick="onSubmitClinked">Create</button>
+    <button type="button" class="btn btn-outline-secondary" @onclick="onCancelClicked">Cancel</button>
+
+
+</EditForm>

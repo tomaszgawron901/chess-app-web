@@ -9,6 +9,16 @@ namespace ChessApp.Web.Components
 {
     public class GameOptionsFormBase: ComponentBase
     {
-        protected GameOptions optionsModel { get; set; }
+        public GameOptions GameOptions = new GameOptions();
+
+        protected void onSubmitClinked()
+        {
+            Console.WriteLine("sub");
+        }
+
+        protected void onCancelClicked()
+        {
+            Console.WriteLine("can");
+        }
     }
 }
