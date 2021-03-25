@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessBoardComponents", "Che
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessApp.Api", "ChessApp.Api\ChessApp.Api.csproj", "{B01F8C3D-8CFB-49E9-B538-C4A5C7BCC258}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessApp.Web", "ChessApp.Web\ChessApp.Web.csproj", "{5493CA57-291B-45FE-A1E6-BE5D049EB74E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessApp.Web", "ChessApp.Web\ChessApp.Web.csproj", "{5493CA57-291B-45FE-A1E6-BE5D049EB74E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

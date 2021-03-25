@@ -1,5 +1,6 @@
 ﻿using ChessApp.Web.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,10 @@ namespace ChessApp.Web.Components
 {
     public class GameOptionsFormBase: ComponentBase
     {
+        public GameOptionsFormBase()
+        {
+            
+        }
         public GameOptions GameOptions = new GameOptions();
 
         protected void onSubmitClinked()
