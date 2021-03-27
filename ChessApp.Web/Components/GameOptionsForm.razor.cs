@@ -10,7 +10,8 @@ namespace ChessApp.Web.Components
 {
     public class GameOptionsFormBase: ComponentBase
     {
-        public GameOptions GameOptions  = new GameOptions();
+        [Parameter] public GameOptions GameOptions { get; set; } = new GameOptions();
+        [Parameter] public bool IsDisabled { get; set; } = false;
         [Parameter] public EventCallback<GameOptions> OnValidSubmit { get; set; } = new EventCallback<GameOptions>();
 
         protected void HandleValidSubmit()

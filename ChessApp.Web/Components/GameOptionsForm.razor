@@ -1,42 +1,45 @@
 ﻿@inherits GameOptionsFormBase
 
 <EditForm Model="@GameOptions" OnValidSubmit="@HandleValidSubmit" class=" mb-3">
-    <DataAnnotationsValidator/>
+    <DataAnnotationsValidator />
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">@L["game_varient"]</span>
+            <span class="input-group-text custom-span">@L["game_varient"]</span>
         </div>
-        <InputSelect class="custom-select" @bind-Value=GameOptions.GameVarient>
+        <InputSelect disabled="@IsDisabled" class="form-control" @bind-Value=GameOptions.GameVarient>
             <option value=@GameVarient.Standard>@L["game_varient.standard"]</option>
         </InputSelect>
     </div>
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">@L["seconds_per_side"]</span>
+            <span class="input-group-text custom-span">@L["seconds_per_side"]</span>
         </div>
-        <InputNumber class="form-control" @bind-Value="GameOptions.SecondsPerSide" />
+        <InputNumber disabled="@IsDisabled" class="form-control" @bind-Value="GameOptions.SecondsPerSide" />
     </div>
 
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">@L["increment_in_seconds"]</span>
+            <span class="input-group-text custom-span">@L["increment_in_seconds"]</span>
         </div>
-        <InputNumber class="form-control" @bind-Value=GameOptions.IncrementInSeconds />
+        <InputNumber disabled="@IsDisabled" class="form-control" @bind-Value=GameOptions.IncrementInSeconds />
     </div>
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">@L["side"]</span>
+            <span class="input-group-text custom-span">@L["side"]</span>
         </div>
-        <InputSelect class="custom-select" @bind-Value=GameOptions.Side>
+        <InputSelect disabled="@IsDisabled" class="form-control" @bind-Value=GameOptions.Side>
             <option value=@Side.White>@L["side.white"]</option>
             <option value=@Side.Black>@L["side.black"]</option>
             <option value=@Side.Random>@L["side.random"]</option>
         </InputSelect>
     </div>
+    @if(!IsDisabled) {
+        <button type="submit" class="btn btn-outline-primary">@L["button.create"]</button>
+        <button type="button" class="btn btn-outline-secondary" @onclick="HandleCancelClicked">@L["button.cancel"]</button>
+    }
 
-    <input type="submit" class="btn btn-outline-primary" value=@L["button.create"]/>
-    <button type="button" class="btn btn-outline-secondary" @onclick="HandleCancelClicked">@L["button.cancel"]</button>
+
 </EditForm>

@@ -10,3 +10,5 @@
 /ChessApp.Api/obj
 /ChessApp.Api/bin
 
+/ChessApp.Web/Properties/PublishProfiles
+/ChessApp.Web/Properties/ServiceDependencies/ChessWebApplication - Web Deploy/profile.arm.json
