@@ -11,12 +11,13 @@ namespace ChessApp.Web.Models
     {
         [Required]
         public GameVarient GameVarient { get; set; }
-        [Required]
-        [Range(1, 600, ErrorMessage = "Seconds per side not in range.")]
+
+        [Range(0, 600), Required]
         public int SecondsPerSide { get; set; }
-        [Required]
-        [Range(1, 600, ErrorMessage = "Increment in seconds not in range.")]
+
+        [Range(1, 600), Required]
         public int IncrementInSeconds { get; set; }
+
         [Required]
         public Side Side { get; set; }
 

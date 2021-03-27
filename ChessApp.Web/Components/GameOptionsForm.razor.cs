@@ -10,18 +10,16 @@ namespace ChessApp.Web.Components
 {
     public class GameOptionsFormBase: ComponentBase
     {
-        public GameOptionsFormBase()
-        {
-            
-        }
-        public GameOptions GameOptions = new GameOptions();
+        public GameOptions GameOptions  = new GameOptions();
+        [Parameter] public EventCallback<GameOptions> OnValidSubmit { get; set; } = new EventCallback<GameOptions>();
 
-        protected void onSubmitClinked()
+        protected void HandleValidSubmit()
         {
-            Console.WriteLine("sub");
+            Console.WriteLine(GameOptions.SecondsPerSide);
+            this.OnValidSubmit.InvokeAsync(this.GameOptions);
         }
 
-        protected void onCancelClicked()
+        protected void HandleCancelClicked()
         {
             Console.WriteLine("can");
         }

@@ -1,7 +1,7 @@
 ﻿@inherits GameOptionsFormBase
 
-<EditForm Model=@GameOptions class="input-group mb-3">
-
+<EditForm Model="@GameOptions" OnValidSubmit="@HandleValidSubmit" class=" mb-3">
+    <DataAnnotationsValidator/>
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1">@L["game_varient"]</span>
@@ -15,7 +15,7 @@
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1">@L["seconds_per_side"]</span>
         </div>
-        <InputNumber class="form-control" @bind-Value=GameOptions.SecondsPerSide ParsingErrorMessage="Must be an integer value" />
+        <InputNumber class="form-control" @bind-Value="GameOptions.SecondsPerSide" />
     </div>
 
 
@@ -23,7 +23,7 @@
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1">@L["increment_in_seconds"]</span>
         </div>
-        <InputNumber class="form-control" @bind-Value=GameOptions.IncrementInSeconds ParsingErrorMessage="Must be an integer value" />
+        <InputNumber class="form-control" @bind-Value=GameOptions.IncrementInSeconds />
     </div>
 
     <div class="input-group mb-3">
@@ -37,8 +37,6 @@
         </InputSelect>
     </div>
 
-    <button type="button" class="btn btn-outline-primary" @onclick="onSubmitClinked">@L["button.create"]</button>
-    <button type="button" class="btn btn-outline-secondary" @onclick="onCancelClicked">@L["button.cancel"]</button>
-
-
+    <input type="submit" class="btn btn-outline-primary" value=@L["button.create"]/>
+    <button type="button" class="btn btn-outline-secondary" @onclick="HandleCancelClicked">@L["button.cancel"]</button>
 </EditForm>
