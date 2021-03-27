@@ -1,0 +1,14 @@
+﻿@inherits CopyUrlFieldBase
+
+<div class="d-flex flex-column">
+    <span>@L["url_form.invite_notification"]</span>
+    <div class="input-group mb-3">
+        <input @ref="UrlInput" @onclick="OnInputClick" readonly type="text" class="form-control" @bind="Url">
+        <div class="input-group-append">
+            <button type="button" class="btn btn-primary" @onclick="OnCopyUrlClicked"><span class="oi oi-link-intact"></span></button>
+        </div>
+    </div>
+    <span>@L["url_form.first_person_notification"]</span>
+</div>
+
+
