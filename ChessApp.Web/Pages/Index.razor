@@ -1,5 +1,5 @@
 ﻿@page "/"
+@inherits IndexBase
 
-
-<GameOptionsForm ></GameOptionsForm>
-<CopyUrlField Url="http\\"></CopyUrlField>
+<h1>@L["create_new_game"]</h1>
+<GameOptionsForm OnValidSubmit="CreateNewGame"></GameOptionsForm>
