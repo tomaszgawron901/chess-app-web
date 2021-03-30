@@ -1,7 +1,7 @@
 ﻿@page  "/waiting-room/{GameCode}"
 @inherits WaitingRoomBase
 
-<GameOptionsForm IsDisabled="true"></GameOptionsForm>
+<FullGameOptionsForm></FullGameOptionsForm>
 <CopyUrlField Url="@JoinUrl"></CopyUrlField>
 <button class="btn btn-primary" @onclick="OnConfirmClicked">@L["button.confirm"]</button>
 <button class="btn btn-danger" @onclick="OnCancelClicked">@L["button.cancel"]</button>

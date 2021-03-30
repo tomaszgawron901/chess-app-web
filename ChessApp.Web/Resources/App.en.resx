@@ -138,6 +138,9 @@
   <data name="increment_in_seconds" xml:space="preserve">
     <value>Increment in seconds</value>
   </data>
+  <data name="not_provided" xml:space="preserve">
+    <value>not provided</value>
+  </data>
   <data name="seconds_per_side" xml:space="preserve">
     <value>Seconds per side</value>
   </data>
@@ -158,5 +161,8 @@
   </data>
   <data name="url_form.invite_notification" xml:space="preserve">
     <value>To invite someone to play, give this URL:</value>
+  </data>
+  <data name="waiting" xml:space="preserve">
+    <value>waiting...</value>
   </data>
 </root>

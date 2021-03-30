@@ -11,7 +11,7 @@ namespace ChessApp.Web.Pages
     public class IndexBase: ComponentBase
     {
         [Inject] protected NavigationManager AppNavigationManager { get; set; }
-        protected void CreateNewGame(GameOptions gameOptions)
+        protected void CreateNewGame(CreateGameOptions gameOptions)
         {
             // TODO create new game and GET game code;
             string gameCode = "EXAMPLE_GAME_CODE";
