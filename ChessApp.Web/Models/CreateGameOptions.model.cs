@@ -7,7 +7,7 @@ using ChessApp.Web.Enums;
 
 namespace ChessApp.Web.Models
 {
-    public class GameOptions
+    public class CreateGameOptions
     {
         [Required]
         public GameVarient GameVarient { get; set; }
@@ -21,7 +21,7 @@ namespace ChessApp.Web.Models
         [Required]
         public Side Side { get; set; }
 
-        public GameOptions()
+        public CreateGameOptions()
         {
             this.GameVarient = GameVarient.Standard;
             this.SecondsPerSide = 300;

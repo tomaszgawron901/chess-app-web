@@ -120,8 +120,14 @@
   <data name="button.cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="button.confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
   <data name="button.create" xml:space="preserve">
     <value>Create</value>
+  </data>
+  <data name="create_new_game" xml:space="preserve">
+    <value>Create new game</value>
   </data>
   <data name="game_varient" xml:space="preserve">
     <value>Game Varient</value>
@@ -131,6 +137,9 @@
   </data>
   <data name="increment_in_seconds" xml:space="preserve">
     <value>Increment in seconds</value>
+  </data>
+  <data name="not_provided" xml:space="preserve">
+    <value>not provided</value>
   </data>
   <data name="seconds_per_side" xml:space="preserve">
     <value>Seconds per side</value>
@@ -152,5 +161,8 @@
   </data>
   <data name="url_form.invite_notification" xml:space="preserve">
     <value>To invite someone to play, give this URL:</value>
+  </data>
+  <data name="waiting" xml:space="preserve">
+    <value>waiting...</value>
   </data>
 </root>
