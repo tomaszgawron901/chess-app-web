@@ -5,11 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ChessClassLibrary.Games.ClassicGame;
 
 namespace ChessApp.Web.Pages
 {
     public class IndexBase: ComponentBase
     {
+        public ClassicGame Game = new ClassicGame();
         [Inject] protected NavigationManager AppNavigationManager { get; set; }
         protected void CreateNewGame(CreateGameOptions gameOptions)
         {

@@ -13,8 +13,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\chess-class-lib\ChessClassLibrary\ChessClassLibrary.csproj" />
-  </ItemGroup>
-
 </Project>

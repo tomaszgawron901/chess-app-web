@@ -1,5 +1,7 @@
 ﻿@page "/"
 @inherits IndexBase
+@using ChessBoardComponents
 
 <h1>@L["create_new_game"]</h1>
 <GameOptionsForm OnValidSubmit="CreateNewGame"></GameOptionsForm>
+<ChessBoardComponent Board="@Game.Board"></ChessBoardComponent>
