@@ -18,6 +18,7 @@ namespace ChessBoardComponents
         protected string GetPieceImageUrl()
         {
             StringBuilder sb = new StringBuilder();
+            sb.Append("_content/ChessBoardComponents/Images/");
             switch (Piece.Color)
             {
                 case PieceColor.White:
@@ -53,7 +54,7 @@ namespace ChessBoardComponents
                 default:
                     break;
             }
-            sb.Append(".png");
+            sb.Append(".svg");
             return sb.ToString();
         }
     }

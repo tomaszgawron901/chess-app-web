@@ -12,6 +12,7 @@ namespace ChessBoardComponents
         None,
         Ok,
         Bad,
+        Select
     }
 
     public enum BackgroudColor
@@ -27,7 +28,7 @@ namespace ChessBoardComponents
         public ChessBoardComponent BoardComponent { get; set; }
 
         [Parameter]
-        public RenderFragment<PieceComponent> PieceComponent { get; set; }
+        public RenderFragment ChildContent { get; set; }
 
         [Parameter]
         public Position Position { get; set; }
@@ -57,6 +58,7 @@ namespace ChessBoardComponents
                 case BorderColor.None: return "lightgrey";
                 case BorderColor.Ok: return "limegreen";
                 case BorderColor.Bad: return "red";
+                case BorderColor.Select: return "dimgrey";
                 default: return "white";
             }
         }

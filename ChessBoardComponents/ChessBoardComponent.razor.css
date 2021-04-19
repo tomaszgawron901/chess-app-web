@@ -1,6 +1,8 @@
 ﻿.boardRow {
     display: flex;
     flex-direction: row;
+    width: 100%;
+    flex-grow: 1;
 }
 
 .board {
@@ -8,4 +10,6 @@
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
+    width: 700px;
+    height: 700px;
 }
