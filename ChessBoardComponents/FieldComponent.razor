@@ -1,6 +1,6 @@
 ﻿@inherits FieldComponentBase
 
-<div class="Field" style="background-color: @GetBackgroundColor(); border-color: @GetBorderColor()">
+<div class="Field" @onclick="OnFieldClick" style="background-color: @GetBackgroundColor(); border-color: @GetBorderColor()">
 
     @if (ChildContent != null)
     {

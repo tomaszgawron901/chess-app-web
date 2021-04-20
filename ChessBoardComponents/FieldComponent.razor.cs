@@ -24,21 +24,22 @@ namespace ChessBoardComponents
 
     public class FieldComponentBase : ComponentBase
     {
-        [CascadingParameter]
-        public ChessBoardComponent BoardComponent { get; set; }
+        [CascadingParameter] public ChessBoardComponent BoardComponent { get; set; }
 
-        [Parameter]
-        public RenderFragment ChildContent { get; set; }
+        [Parameter] public RenderFragment ChildContent { get; set; }
 
-        [Parameter]
-        public Position Position { get; set; }
+        [Parameter] public Position Position { get; set; }
+        [Parameter]  public BackgroudColor BackgroudColor { get; set; }
+        [Parameter] public BorderColor BorderColor { get; set; }
+
+        [Parameter] public EventCallback<Position> OnFieldClicked { get; set; }
 
 
-        [Parameter]
-        public BackgroudColor BackgroudColor { get; set; }
+        public void SetBorderColor(BorderColor color)
+        {
+            this.BorderColor = color;
+        }
 
-        [Parameter]
-        public BorderColor BorderColor { get; set; }
 
         protected string GetBackgroundColor()
         {
@@ -58,9 +59,14 @@ namespace ChessBoardComponents
                 case BorderColor.None: return "lightgrey";
                 case BorderColor.Ok: return "limegreen";
                 case BorderColor.Bad: return "red";
-                case BorderColor.Select: return "dimgrey";
+                case BorderColor.Select: return "black";
                 default: return "white";
             }
+        }
+
+        protected async void OnFieldClick()
+        {
+            await this.OnFieldClicked.InvokeAsync(this.Position);
         }
     }
 }

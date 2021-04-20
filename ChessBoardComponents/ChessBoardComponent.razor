@@ -16,10 +16,10 @@
                 int h = height;
                 int w = width;
                 var currentPiece = Board.GetPiece(new Position(w, h));
-                <FieldComponent BackgroudColor="@color" @ref=@Fields[w,h]>
+                <FieldComponent BackgroudColor="@color" @ref=@Fields[w,h] Position="new Position(w, h)" OnFieldClicked="OnFieldClicked">
                     @if (currentPiece != null)
                     {
-                        <PieceComponent Piece="@currentPiece"></PieceComponent>
+                        <PieceComponent PieceColor="currentPiece.Color" PieceType="currentPiece.Type"></PieceComponent>
                     }
                 </FieldComponent>
             }

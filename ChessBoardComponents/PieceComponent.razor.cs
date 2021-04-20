@@ -9,17 +9,16 @@ namespace ChessBoardComponents
 {
     public class PieceComponentBase : ComponentBase
     {
-        [CascadingParameter]
-        public FieldComponent FieldComponent { get; set; }
+        [CascadingParameter] public FieldComponent FieldComponent { get; set; }
 
-        [Parameter]
-        public IPiece Piece { get; set; }
+        [Parameter] public PieceColor PieceColor { get; set; }
+        [Parameter] public PieceType PieceType { get; set; }
 
         protected string GetPieceImageUrl()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("_content/ChessBoardComponents/Images/");
-            switch (Piece.Color)
+            switch (PieceColor)
             {
                 case PieceColor.White:
                     sb.Append("White");
@@ -31,7 +30,7 @@ namespace ChessBoardComponents
                     break;
             }
 
-            switch (Piece.Type)
+            switch (PieceType)
             {
                 case PieceType.Pawn:
                     sb.Append("Pawn");
