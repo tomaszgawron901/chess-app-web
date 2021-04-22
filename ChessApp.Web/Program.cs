@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using ChessBoardComponents.Interops;
 
 namespace ChessApp.Web
 {
@@ -23,6 +24,7 @@ namespace ChessApp.Web
             builder.Services.AddScoped<IStringLocalizer<App>, StringLocalizer<App>>();
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddSingleton<ChessBoardInterops>();
 
             await builder.Build().RunAsync();
         }

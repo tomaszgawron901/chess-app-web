@@ -1,3 +1,29 @@
 ﻿@page "/game-room/{GameCode}"
+@inherits GameRoomBase
+@using ChessBoardComponents
 
+
+<div class="game-room-container">
+    <div class="left-sidebar">
+        <div class="card">
+            <div class="card-body">
+                <FullGameOptionsForm></FullGameOptionsForm>
+                <CopyUrlField Url="@JoinUrl"></CopyUrlField>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <ChessBoardComponent Board="@Game.Board"></ChessBoardComponent>
+    </div>
+
+    <div class="right-sidebar">
+        <div class="card">
+            <div class="card-body">
+                <FullGameOptionsForm></FullGameOptionsForm>
+                <CopyUrlField Url="@JoinUrl"></CopyUrlField>
+            </div>
+        </div>
+    </div>
+</div>
 

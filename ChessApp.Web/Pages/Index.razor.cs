@@ -11,7 +11,6 @@ namespace ChessApp.Web.Pages
 {
     public class IndexBase: ComponentBase
     {
-        public ClassicGame Game = new ClassicGame();
         [Inject] protected NavigationManager AppNavigationManager { get; set; }
         protected void CreateNewGame(CreateGameOptions gameOptions)
         {
@@ -22,7 +21,7 @@ namespace ChessApp.Web.Pages
 
         private void NavigateToWaitingRoom(string gameCode)
         {
-            AppNavigationManager.NavigateTo($"/waiting-room/{gameCode}");
+            AppNavigationManager.NavigateTo($"/game-room/{gameCode}");
         }
     }
 }

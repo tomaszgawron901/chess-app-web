@@ -135,6 +135,9 @@
   <data name="game_varient.standard" xml:space="preserve">
     <value>Standard</value>
   </data>
+  <data name="increment" xml:space="preserve">
+    <value>Increment</value>
+  </data>
   <data name="increment_in_seconds" xml:space="preserve">
     <value>Increment in seconds</value>
   </data>
@@ -156,11 +159,17 @@
   <data name="side.white" xml:space="preserve">
     <value>White</value>
   </data>
+  <data name="time" xml:space="preserve">
+    <value>Time</value>
+  </data>
   <data name="url_form.first_person_notification" xml:space="preserve">
     <value>The first person to come to this URL will play with you.</value>
   </data>
   <data name="url_form.invite_notification" xml:space="preserve">
     <value>To invite someone to play, give this URL:</value>
+  </data>
+  <data name="varient" xml:space="preserve">
+    <value>Varient</value>
   </data>
   <data name="waiting" xml:space="preserve">
     <value>waiting...</value>
