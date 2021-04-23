@@ -1,4 +1,5 @@
 ﻿using ChessClassLibrary;
+using ChessClassLibrary.enums;
 using ChessClassLibrary.Pieces;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -7,6 +8,12 @@ using System.Text;
 
 namespace ChessBoardComponents
 {
+    public class PieceForView
+    {
+        public PieceColor PieceColor;
+        public PieceType PieceType;
+    }
+
     public enum BorderColor
     {
         None,
@@ -24,16 +31,11 @@ namespace ChessBoardComponents
 
     public class FieldComponentBase : ComponentBase
     {
-        [CascadingParameter] public ChessBoardComponent BoardComponent { get; set; }
-
-        [Parameter] public RenderFragment ChildContent { get; set; }
-
-        [Parameter] public Position Position { get; set; }
         [Parameter]  public BackgroudColor BackgroudColor { get; set; }
         [Parameter] public BorderColor BorderColor { get; set; }
+        [Parameter] public PieceForView Piece { get; set; }
 
-        [Parameter] public EventCallback<Position> OnFieldClicked { get; set; }
-
+        [Parameter] public EventCallback OnFieldClicked { get; set; }
 
         public void SetBorderColor(BorderColor color)
         {
@@ -66,7 +68,7 @@ namespace ChessBoardComponents
 
         protected async void OnFieldClick()
         {
-            await this.OnFieldClicked.InvokeAsync(this.Position);
+            await this.OnFieldClicked.InvokeAsync();
         }
     }
 }

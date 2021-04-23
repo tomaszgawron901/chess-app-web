@@ -9,8 +9,6 @@ namespace ChessBoardComponents
 {
     public class PieceComponentBase : ComponentBase
     {
-        [CascadingParameter] public FieldComponent FieldComponent { get; set; }
-
         [Parameter] public PieceColor PieceColor { get; set; }
         [Parameter] public PieceType PieceType { get; set; }
 

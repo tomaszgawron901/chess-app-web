@@ -1,6 +1,7 @@
 ﻿using ChessBoardComponents.Interops;
 using ChessClassLibrary;
 using ChessClassLibrary.Boards;
+using ChessClassLibrary.Pieces;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -12,40 +13,45 @@ namespace ChessBoardComponents
 {
     public class ChessBoardComponentBase : ComponentBase
     {
-        protected Position? selectedPosition;
+        public Position? selectedPosition;
 
-        private ClassicBoard _board;
-        [Parameter]
-        public ClassicBoard Board
+        [Parameter] public int Width { get; set; } = 8;
+        [Parameter] public int Height { get; set; } = 8;
+        [Parameter] public bool IsRotated { get; set; } = false;
+
+        [Parameter] public EventCallback<Position> OnFieldClicked { get; set; }
+        [Parameter] public EventCallback IsReady { get; set; }
+
+        public FieldComponent[,] Fields;
+
+        protected override async Task OnInitializedAsync()
         {
-            get
-            {
-                return _board;
-            }
-            set
-            {
-                _board = value;
-                Fields = new FieldComponent[Board.Width, Board.Height];
-            }
+            await base.OnInitializedAsync();
+            Fields = new FieldComponent[Width, Height];
         }
 
-        protected FieldComponent[,] Fields { get; set; }
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+            if (firstRender)
+            {
 
-        [Parameter]
-        public bool IsRotated { get; set; } = false;
+                await this.IsReady.InvokeAsync();
+            }
+        }
 
         protected IEnumerable<int> GetXIndexes()
         {
             if (IsRotated)
             {
-                for (int i = Board.Width - 1; i >= 0; i--)
+                for (int i = Width - 1; i >= 0; i--)
                 {
                     yield return i;
                 }
             }
             else
             {
-                for (int i = 0; i < Board.Width; i++)
+                for (int i = 0; i < Width; i++)
                 {
                     yield return i;
                 }
@@ -56,39 +62,26 @@ namespace ChessBoardComponents
         {
             if (IsRotated)
             {
-                for (int i = 0; i < Board.Height; i++)
+                for (int i = 0; i < Height; i++)
                 {
                     yield return i;
                 }
             }
             else
             {
-                for (int i = Board.Height - 1; i >= 0; i--)
+                for (int i = Height - 1; i >= 0; i--)
                 {
                     yield return i;
                 }
             }
         }
 
-        public void OnFieldClicked(Position position)
+        protected async void OnFieldClick(int x, int y)
         {
-            Console.WriteLine(position.x + " " + position.y);
-            if (this.selectedPosition == null)
-            {
-                var piece = this.Board.GetPiece(position);
-                if (piece != null)
-                {
-                    this.ShowMoves(piece.MoveSet.Select(move => position + move.Shift));
-                    this.SelectPosition(position);
-                }
-            }
-            else
-            {
-                this.UnSelectAll();
-            }
+            await OnFieldClicked.InvokeAsync(new Position(x, y));
         }
 
-        private void UnSelectAll()
+        public void UnSelectAll()
         {
             foreach (FieldComponent field in this.Fields)
             {
@@ -97,13 +90,13 @@ namespace ChessBoardComponents
             this.selectedPosition = null;
         }
 
-        private void SelectPosition(Position position)
+        public void SelectPosition(Position position)
         {
             this.Fields[position.x, position.y].SetBorderColor(BorderColor.Select);
             this.selectedPosition = position;
         }
 
-        private void ShowMoves(IEnumerable<Position> positions)
+        public void ShowMoves(IEnumerable<Position> positions)
         {
             foreach (Position position in positions)
             {

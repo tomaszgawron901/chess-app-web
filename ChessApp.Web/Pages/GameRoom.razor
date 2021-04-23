@@ -14,7 +14,10 @@
     </div>
 
     <div class="main">
-        <ChessBoardComponent Board="@Game.Board"></ChessBoardComponent>
+        @if (Game != null)
+        {
+            <ChessBoardComponent @ref="ChessBoardComponent" IsRotated="false" Width="Game.Board.Width" Height="Game.Board.Height" OnFieldClicked="OnBoardFieldClicked" IsReady="AfterBoardReady"/>
+        }
     </div>
 
     <div class="right-sidebar">

@@ -2,9 +2,9 @@
 
 <div class="Field" @onclick="OnFieldClick" style="background-color: @GetBackgroundColor(); border-color: @GetBorderColor()">
 
-    @if (ChildContent != null)
+    @if (Piece != null)
     {
-        @ChildContent
+        <PieceComponent PieceColor="Piece.PieceColor" PieceType="Piece.PieceType"></PieceComponent>
     }
 
 </div>
