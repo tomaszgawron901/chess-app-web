@@ -8,16 +8,14 @@ on:
     branches:
       - master
 
-defaults:
-  run:
-    working-directory: ChessApp.Web
-
 jobs:
   build-and-deploy:
     runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
 
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
