@@ -1,0 +1,17 @@
+﻿.boardRow {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.board {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    min-width: 200px;
+    width: 90vmin;
+    height: 90vmin;
+}

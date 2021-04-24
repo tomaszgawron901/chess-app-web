@@ -1,0 +1,18 @@
+﻿images created by: https://en.wikipedia.org/wiki/User:Cburnett
+distributed by: https://en.wikipedia.org/
+license: https://creativecommons.org/licenses/by-sa/3.0/legalcode
+license summary: https://creativecommons.org/licenses/by-sa/3.0/
+
+images links:
+https://en.wikipedia.org/wiki/File:Chess_klt45.svg
+https://en.wikipedia.org/wiki/File:Chess_kdt45.svg
+https://en.wikipedia.org/wiki/File:Chess_qlt45.svg
+https://en.wikipedia.org/wiki/File:Chess_qdt45.svg
+https://en.wikipedia.org/wiki/File:Chess_rlt45.svg
+https://en.wikipedia.org/wiki/File:Chess_rdt45.svg
+https://en.wikipedia.org/wiki/File:Chess_blt45.svg
+https://en.wikipedia.org/wiki/File:Chess_bdt45.svg
+https://en.wikipedia.org/wiki/File:Chess_nlt45.svg
+https://en.wikipedia.org/wiki/File:Chess_ndt45.svg
+https://en.wikipedia.org/wiki/File:Chess_plt45.svg
+https://en.wikipedia.org/wiki/File:Chess_pdt45.svg

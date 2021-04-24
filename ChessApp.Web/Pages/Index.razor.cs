@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ChessClassLibrary.Games.ClassicGame;
 
 namespace ChessApp.Web.Pages
 {
@@ -20,7 +21,7 @@ namespace ChessApp.Web.Pages
 
         private void NavigateToWaitingRoom(string gameCode)
         {
-            AppNavigationManager.NavigateTo($"/waiting-room/{gameCode}");
+            AppNavigationManager.NavigateTo($"/game-room/{gameCode}");
         }
     }
 }

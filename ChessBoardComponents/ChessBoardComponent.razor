@@ -1,0 +1,22 @@
+﻿@inherits ChessBoardComponentBase
+@using ChessClassLibrary.Pieces;
+@using ChessClassLibrary;
+
+<div class="board">
+    @foreach (int height in GetYIndexes())
+    {
+        <div class="boardRow">
+            @foreach (int width in GetXIndexes())
+            {
+                BackgroudColor color = BackgroudColor.Light;
+                @if ((height + width) % 2 == 0)
+                {
+                    color = color = BackgroudColor.Dark;
+                }
+                int h = height;
+                int w = width;
+                <FieldComponent BackgroudColor="@color" @ref=@Fields[w,h]  OnFieldClicked="() => { OnFieldClick(w, h); }" />
+            }
+        </div>
+    }
+</div>

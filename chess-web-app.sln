@@ -9,11 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "chess-class-lib", "chess-cl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessClassLibraryTests", "chess-class-lib\ChessClassLibraryTests\ChessClassLibraryTests.csproj", "{BD6B10DD-00C0-4E83-B1BD-3CAF26F13A52}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessBoardComponents", "ChessBoardComponents\ChessBoardComponents.csproj", "{172EB366-53E5-4F3D-A64E-3011AF50E12F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessApp.Api", "ChessApp.Api\ChessApp.Api.csproj", "{B01F8C3D-8CFB-49E9-B538-C4A5C7BCC258}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessApp.Web", "ChessApp.Web\ChessApp.Web.csproj", "{5493CA57-291B-45FE-A1E6-BE5D049EB74E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessBoardComponents", "ChessBoardComponents\ChessBoardComponents.csproj", "{1E419C72-39BA-4FE9-A11C-98C38843EB3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,18 +27,14 @@ Global
 		{BD6B10DD-00C0-4E83-B1BD-3CAF26F13A52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD6B10DD-00C0-4E83-B1BD-3CAF26F13A52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD6B10DD-00C0-4E83-B1BD-3CAF26F13A52}.Release|Any CPU.Build.0 = Release|Any CPU
-		{172EB366-53E5-4F3D-A64E-3011AF50E12F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{172EB366-53E5-4F3D-A64E-3011AF50E12F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{172EB366-53E5-4F3D-A64E-3011AF50E12F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{172EB366-53E5-4F3D-A64E-3011AF50E12F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B01F8C3D-8CFB-49E9-B538-C4A5C7BCC258}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B01F8C3D-8CFB-49E9-B538-C4A5C7BCC258}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B01F8C3D-8CFB-49E9-B538-C4A5C7BCC258}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B01F8C3D-8CFB-49E9-B538-C4A5C7BCC258}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5493CA57-291B-45FE-A1E6-BE5D049EB74E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5493CA57-291B-45FE-A1E6-BE5D049EB74E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5493CA57-291B-45FE-A1E6-BE5D049EB74E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5493CA57-291B-45FE-A1E6-BE5D049EB74E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E419C72-39BA-4FE9-A11C-98C38843EB3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E419C72-39BA-4FE9-A11C-98C38843EB3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E419C72-39BA-4FE9-A11C-98C38843EB3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E419C72-39BA-4FE9-A11C-98C38843EB3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
