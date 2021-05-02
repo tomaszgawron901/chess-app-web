@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
@@ -27,6 +28,8 @@ namespace ChessApp.Web
             builder.Services.AddSingleton<ChessBoardInterops>();
 
             await builder.Build().RunAsync();
+
+            
         }
     }
 }

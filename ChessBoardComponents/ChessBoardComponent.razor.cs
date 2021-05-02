@@ -1,6 +1,7 @@
 ﻿using ChessBoardComponents.Interops;
 using ChessClassLibrary;
 using ChessClassLibrary.Boards;
+using ChessClassLibrary.Models;
 using ChessClassLibrary.Pieces;
 using Microsoft.AspNetCore.Components;
 using System;

@@ -1,7 +1,10 @@
 ﻿using ChessBoardComponents;
 using ChessClassLibrary;
 using ChessClassLibrary.Games.ClassicGame;
+using ChessClassLibrary.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +15,7 @@ namespace ChessApp.Web.Pages
     public class GameRoomBase: ComponentBase
     {
         [Inject] protected NavigationManager AppNavigationManager { get; set; }
+        [Inject] IConfiguration Configuration { get; set; }
 
         protected ChessBoardComponent ChessBoardComponent;
 
@@ -22,6 +26,10 @@ namespace ChessApp.Web.Pages
         protected override async Task OnInitializedAsync()
         {
             await base.OnParametersSetAsync();
+
+            var connection = new HubConnectionBuilder().WithUrl($"{Configuration.GetSection("api_root").Value}/gamehub").Build();
+            await connection.StartAsync();
+            
             this.JoinUrl = AppNavigationManager.Uri;
             // TODO check is game with given code exists
             // TODO GET game options
