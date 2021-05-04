@@ -27,7 +27,7 @@ namespace ChessApp.Web.Pages
         {
             await base.OnParametersSetAsync();
 
-            var connection = new HubConnectionBuilder().WithUrl($"{Configuration.GetSection("api_root").Value}/gamehub").Build();
+            var connection = new HubConnectionBuilder().WithUrl($"{Configuration.GetSection("chess_server_root").Value}gamehub").Build();
             await connection.StartAsync();
             
             this.JoinUrl = AppNavigationManager.Uri;

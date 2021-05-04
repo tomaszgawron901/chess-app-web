@@ -6,20 +6,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ChessClassLibrary.Games.ClassicGame;
+using ChessApp.Web.Services;
+using ChessClassLibrary.Models;
 
 namespace ChessApp.Web.Pages
 {
     public class IndexBase: ComponentBase
     {
         [Inject] protected NavigationManager AppNavigationManager { get; set; }
-        protected void CreateNewGame(CreateGameOptions gameOptions)
+        [Inject] protected GameService GameService { get; set; }
+
+        protected bool isFormDisabled { get; set; } = false;
+
+        protected async void CreateNewGame(GameOptions gameOptions)
         {
-            // TODO create new game and GET game code;
-            string gameCode = "EXAMPLE_GAME_CODE";
-            this.NavigateToWaitingRoom(gameCode);
+            isFormDisabled = true;
+            string gameCode = await GameService.CreateNewGameRoom(gameOptions);
+            isFormDisabled = false;
+            this.NavigateToGameRoom(gameCode);
         }
 
-        private void NavigateToWaitingRoom(string gameCode)
+        private void NavigateToGameRoom(string gameCode)
         {
             AppNavigationManager.NavigateTo($"/game-room/{gameCode}");
         }
