@@ -61,9 +61,8 @@ namespace ChessApp.Web.helpers
         private async Task JoinGame(string gameCode)
         {
             this.gameCode = gameCode;
-            await this.hubConnection.InvokeAsync("JoinGame", this.gameCode);
+            var gameOptions = await this.hubConnection.InvokeAsync<GameOptions>("JoinGame", this.gameCode);
 
-            var gameOptions = await this.gameService.GetGameOptionsByKey(gameCode);
             this.SetGameOptions(gameOptions);
 
         }

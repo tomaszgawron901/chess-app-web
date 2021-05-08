@@ -105,7 +105,7 @@ namespace ChessBoardComponents
 
         public void SelectPosition(Position position)
         {
-            this.Fields[position.x, position.y].SetBorderColor(BorderColor.Select);
+            this.Fields[position.X, position.Y].SetBorderColor(BorderColor.Select);
             this.selectedPosition = position;
         }
 
@@ -113,7 +113,7 @@ namespace ChessBoardComponents
         {
             foreach (Position position in positions)
             {
-                this.Fields[position.x, position.y].SetBorderColor(BorderColor.Ok);
+                this.Fields[position.X, position.Y].SetBorderColor(BorderColor.Ok);
             }
         }
     }

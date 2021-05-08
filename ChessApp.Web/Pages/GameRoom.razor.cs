@@ -46,7 +46,7 @@ namespace ChessApp.Web.Pages
 
         protected async Task OnBoardFieldClicked(Position position)
         {
-            Console.WriteLine(position.x + " " + position.y);
+            Console.WriteLine(position.X + " " + position.Y);
             if (ChessBoardComponent.selectedPosition == null)
             {
                 
