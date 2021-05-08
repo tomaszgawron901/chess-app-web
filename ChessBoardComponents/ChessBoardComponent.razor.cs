@@ -19,11 +19,12 @@ namespace ChessBoardComponents
         [Parameter] public int Width { get; set; } = 8;
         [Parameter] public int Height { get; set; } = 8;
         [Parameter] public bool IsRotated { get; set; } = false;
+        [Parameter] public PieceForView[,] Pieces { get; set; }
 
         [Parameter] public EventCallback<Position> OnFieldClicked { get; set; }
         [Parameter] public EventCallback<ChessBoardComponentBase> IsReady { get; set; }
 
-        public FieldComponent[,] Fields;
+        protected FieldComponent[,] Fields;
 
         protected override async Task OnInitializedAsync()
         {
@@ -36,8 +37,19 @@ namespace ChessBoardComponents
             await base.OnAfterRenderAsync(firstRender);
             if (firstRender)
             {
-
                 await this.IsReady.InvokeAsync(this);
+            }
+        }
+
+        protected PieceForView GetPiece(int w, int h)
+        {
+            try
+            {
+                return this.Pieces[w, h];
+            }
+            catch
+            {
+                return null;
             }
         }
 

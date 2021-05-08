@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using ChessBoardComponents.Interops;
 using ChessApp.Web.Services;
 using Microsoft.AspNetCore.SignalR.Client;
+using ChessApp.Web.helpers;
 
 namespace ChessApp.Web
 {
@@ -33,6 +34,8 @@ namespace ChessApp.Web
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<GameService>();
             builder.Services.AddScoped<ChessBoardInterops>();
+
+            builder.Services.AddTransient<GameManager>();
 
             await builder.Build().RunAsync();
 

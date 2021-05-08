@@ -38,18 +38,9 @@ namespace ChessApp.Web.Services
             return await response.Content.ReadFromJsonAsync<GameOptions>();
         }
 
-        public async Task<HubConnection> JoinGame(string roomKey, Action<string, GameOptions> onGameOptionsChange=null)
+        public HubConnection GetHubConnection()
         {
-            var connection = new HubConnectionBuilder().WithUrl($"{configuration.GetSection("chess_server_root").Value}gamehub").Build();
-            if (onGameOptionsChange != null)
-            {
-                connection.On<string, GameOptions>("GameOptionsChanged", onGameOptionsChange);
-            }
-            await connection.StartAsync();
-
-            await connection.InvokeAsync("JoinGame", roomKey);
-
-            return connection;
+            return new HubConnectionBuilder().WithUrl($"{configuration.GetSection("chess_server_root").Value}gamehub").Build();
         }
     }
 }

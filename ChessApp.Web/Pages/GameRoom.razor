@@ -14,9 +14,9 @@
     </div>
 
     <div class="main">
-        @if (GameManager != null)
+        @if (GameManager.IsGameCreated)
         {
-            <ChessBoardComponent IsRotated="IsBoardRotated" Width="GameManager.Board.Width" Height="GameManager.Board.Height" OnFieldClicked="OnBoardFieldClicked" IsReady="AfterBoardReady"/>
+            <ChessBoardComponent IsRotated="IsBoardRotated" Pieces="pieces" OnFieldClicked="OnBoardFieldClicked" IsReady="AfterBoardReady"/>
         }
     </div>
 

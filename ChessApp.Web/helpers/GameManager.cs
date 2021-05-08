@@ -1,4 +1,7 @@
-﻿using ChessClassLibrary.Boards;
+﻿using ChessApp.Web.Pages;
+using ChessApp.Web.Services;
+using ChessBoardComponents;
+using ChessClassLibrary.Boards;
 using ChessClassLibrary.enums;
 using ChessClassLibrary.Games;
 using ChessClassLibrary.Games.ClassicGame;
@@ -11,32 +14,64 @@ using System.Threading.Tasks;
 
 namespace ChessApp.Web.helpers
 {
-    public class GameManager : IClassicGame
+    public class GameManager: IAsyncDisposable
     {
         private HubConnection hubConnection;
-        public GameManager(HubConnection hubConnection)
+        private GameService gameService;
+
+        private string gameCode;
+        private GameOptions gameOptions;
+        private GameRoomBase gameRoom;
+        private IClassicGame game;
+
+        public bool IsGameCreated { get; private set; }
+
+        public GameManager(GameService gameService)
         {
-            this.hubConnection = hubConnection;
-            hubConnection.On<BoardMove>("PerformMove", (boardMove) => {
-                if (InnerGame != null)
+            this.gameService = gameService;
+        }
+
+
+        private async Task Connect()
+        {
+            this.hubConnection = gameService.GetHubConnection();
+            await this.hubConnection.StartAsync();
+        }
+
+        private void SetListeners()
+        {
+            this.hubConnection.On<string, GameOptions>("GameOptionsChanged", (gameKey, gameOptions) =>
+            {
+                if (gameKey == this.gameCode)
                 {
-                    InnerGame.TryPerformMove(boardMove);
+                    this.gameOptions = gameOptions;
+                    this.gameRoom.SetGameOptions(this.gameOptions);
+                }
+            });
+
+            this.hubConnection.On<string, BoardMove>("PerformMove", (gameKey, boardMove) => {
+                if (gameKey == this.gameCode)
+                {
+                    this.game.TryPerformMove(boardMove);
+                    this.gameRoom.SetBoardPieces(GetPiecesForView());
                 }
             });
         }
 
-        public void CreateGame(GameOptions gameOptions)
+        private async Task JoinGame(string gameCode)
         {
-            switch (gameOptions.GameVarient)
-            {
-                case GameVarient.Standard:
-                    InnerGame = new ClassicGame();
-                    break;
-                default:
-                    InnerGame = null;
-                    throw new NotSupportedException("Game type not supported");
-            }
+            this.gameCode = gameCode;
+            await this.hubConnection.InvokeAsync("JoinGame", this.gameCode);
 
+            var gameOptions = await this.gameService.GetGameOptionsByKey(gameCode);
+            this.SetGameOptions(gameOptions);
+
+        }
+
+        private void SetGameOptions(GameOptions gameOptions)
+        {
+            this.gameOptions = gameOptions;
+            this.gameRoom.SetGameOptions(gameOptions);
             if (gameOptions.Player1 == hubConnection.ConnectionId)
             {
                 this.ClientColor = PieceColor.White;
@@ -51,20 +86,71 @@ namespace ChessApp.Web.helpers
             }
         }
 
-        public IClassicGame InnerGame { get; set; }
-        public PieceColor ClientColor { get; set; }
+        public async Task PrepareGameRoom(string gameCode, GameRoomBase gameRoom)
+        {
+            if (gameCode == null || gameRoom == null)
+            {
+                throw new ArgumentNullException("gameCode or gameRoom not provided");
+            }
+            this.gameRoom = gameRoom;
 
-        public PieceColor CurrentPlayerColor => InnerGame != null ? InnerGame.CurrentPlayerColor : throw new NullReferenceException("Inner game does not exist.");
+            await this.Connect();
+            await this.JoinGame(gameCode);
+            this.SetListeners();
+            this.CreateGame();
+        }
 
-        public GameState GameState => InnerGame != null ? InnerGame.GameState : GameState.NotStarted;
 
-        public ClassicBoard Board => InnerGame != null ? InnerGame.Board : null;
+        private void CreateGame()
+        {
+            switch (gameOptions.GameVarient)
+            {
+                case GameVarient.Standard:
+                    this.game = new ClassicGame();
+                    break;
+                default:
+                    this.game = null;
+                    throw new NotSupportedException("Game type not supported");
+            }
+            this.gameRoom.SetBoardPieces(GetPiecesForView());
+            this.IsGameCreated = true;
+        }
+
+        private async Task SetAsReady()
+        {
+            await this.hubConnection.InvokeAsync("SetAsReady"); // -----------
+        }
+
+        public PieceColor ClientColor { get; private set; }
+
+        public PieceColor CurrentPlayerColor => game != null ? game.CurrentPlayerColor : throw new NullReferenceException("Inner game does not exist.");
+
+        public GameState GameState => game != null ? game.GameState : GameState.NotStarted;
+
+
+        private PieceForView[,] GetPiecesForView()
+        {
+            if (this.game == null)
+            {
+                return new PieceForView[8, 8];
+            }
+
+            var pieces = new PieceForView[this.game.Board.Width, this.game.Board.Height];
+            for (int x = 0; x < this.game.Board.Width; x++)
+            {
+                for (int y = 0; y < this.game.Board.Height; y++)
+                {
+                    pieces[x, y] = this.GetPieceForViewAtPosition(new Position(x, y));
+                }
+            }
+            return pieces;
+        }
 
         public bool CanPerformMove(BoardMove move)
         {
             try
             {
-                return  InnerGame != null && ClientColor == CurrentPlayerColor  && InnerGame.CanPerformMove(move);
+                return  game != null && ClientColor == CurrentPlayerColor  && game.CanPerformMove(move);
             }
             catch
             {
@@ -75,24 +161,44 @@ namespace ChessApp.Web.helpers
 
         public IEnumerable<PieceMove> GetPieceMoveSetAtPosition(Position position)
         {
-            Console.WriteLine("ashdkjadsk");
-            if (InnerGame != null && CurrentPlayerColor == ClientColor)
+            if (game != null && CurrentPlayerColor == ClientColor)
             {
-                return InnerGame.GetPieceMoveSetAtPosition(position);
+                return game.GetPieceMoveSetAtPosition(position);
             }
             return Enumerable.Empty<PieceMove>();
         }
 
-        public void PerformMove(BoardMove move)
+        private async Task PerformMove(BoardMove move)
         {
-            this.hubConnection.SendAsync("PerformMove", move);
+            await this.hubConnection.InvokeAsync("PerformMove", this.gameCode, move);
         }
 
-        public void TryPerformMove(BoardMove move)
+        public async Task TryPerformMove(BoardMove move)
         {
             if (CanPerformMove(move))
             {
-                PerformMove(move);
+                await PerformMove(move);
+            }
+        }
+
+        public PieceForView GetPieceForViewAtPosition(Position position)
+        {
+            try
+            {
+                var piece = this.game.Board.GetPiece(position);
+                return new PieceForView() { PieceColor = piece.Color, PieceType = piece.Type };
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            if (this.hubConnection != null)
+            {
+                await this.hubConnection.DisposeAsync();
             }
         }
     }
