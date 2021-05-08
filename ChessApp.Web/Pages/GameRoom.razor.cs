@@ -1,4 +1,6 @@
-﻿using ChessBoardComponents;
+﻿using ChessApp.Web.helpers;
+using ChessApp.Web.Services;
+using ChessBoardComponents;
 using ChessClassLibrary;
 using ChessClassLibrary.Games.ClassicGame;
 using ChessClassLibrary.Models;
@@ -12,42 +14,83 @@ using System.Threading.Tasks;
 
 namespace ChessApp.Web.Pages
 {
-    public class GameRoomBase: ComponentBase
+    public class GameRoomBase: ComponentBase, IAsyncDisposable
     {
         [Inject] protected NavigationManager AppNavigationManager { get; set; }
         [Inject] IConfiguration Configuration { get; set; }
+        [Inject] GameService GameService { get; set; }
 
-        protected ChessBoardComponent ChessBoardComponent;
+        protected ChessBoardComponentBase ChessBoardComponent;
 
         [Parameter] public string GameCode { get; set; }
         protected string JoinUrl;
-        protected ClassicGame Game;
+        protected GameManager GameManager;
+        protected GameOptions GameOptions;
+        protected HubConnection HubConnection;
+
+        private bool IsGameReady = false;
+        private bool IsBoardReady = false;
+
+        protected bool IsBoardRotated => this.GameOptions?.Player2 == HubConnection.ConnectionId;
 
         protected override async Task OnInitializedAsync()
         {
-            await base.OnParametersSetAsync();
-
-            var connection = new HubConnectionBuilder().WithUrl($"{Configuration.GetSection("chess_server_root").Value}gamehub").Build();
-            await connection.StartAsync();
-            
+            await base.OnInitializedAsync();
             this.JoinUrl = AppNavigationManager.Uri;
-            // TODO check is game with given code exists
-            // TODO GET game options
-            // TODO connect to signalR server
-            // TODO if two users are connected start game
-            Game = new ClassicGame();
-            await OnGameCreate();
 
+            await ConnectToGame();
+            await GetGameOptions();
+            CreateNewGame();
         }
 
-        protected async Task OnGameCreate()
+        protected async Task GetGameOptions()
         {
+            this.GameOptions = await this.GameService.GetGameOptionsByKey(GameCode);
         }
 
-        public void AfterBoardReady()
+        protected async Task ConnectToGame()
         {
-            UpdateBoardComponentPieces();
+            this.HubConnection = await this.GameService.JoinGame(GameCode, (gameKey, gameOptions) =>
+            {
+                if (gameKey == this.GameCode)
+                {
+                    this.GameOptions = gameOptions;
+                    this.StateHasChanged();
+                }
+            });
+            GameManager = new GameManager(this.HubConnection);
         }
+
+        protected void CreateNewGame()
+        {
+            try
+            {
+                if (this.GameOptions?.GameVarient == null) throw new NullReferenceException();
+                this.GameManager.CreateGame(this.GameOptions); // throws
+                IsGameReady = true;
+
+                if (IsBoardReady)
+                {
+                    UpdateBoardComponentPieces();
+                }
+            }
+            catch
+            {
+                // TODO  inform about
+            }
+
+        }
+
+        protected void AfterBoardReady(ChessBoardComponentBase board)
+        {
+            this.ChessBoardComponent = board;
+            this.IsBoardReady = true;
+            if (IsGameReady)
+            {
+                UpdateBoardComponentPieces();
+            }
+        }
+
 
         protected void OnBoardFieldClicked(Position position)
         {
@@ -55,10 +98,10 @@ namespace ChessApp.Web.Pages
             if (ChessBoardComponent.selectedPosition == null)
             {
                 
-                var pieceAtPosition = Game.Board.GetPiece(position);
+                var pieceAtPosition = GameManager.Board.GetPiece(position);
                 if (pieceAtPosition != null)
                 {
-                    if (pieceAtPosition.Color == Game.CurrentPlayerColor)
+                    if (pieceAtPosition.Color == GameManager.CurrentPlayerColor)
                     {
                         ChessBoardComponent.SelectPosition(position);
                         ChessBoardComponent.ShowMoves(pieceAtPosition.MoveSet.Select(x => position + x.Shift));
@@ -68,9 +111,9 @@ namespace ChessApp.Web.Pages
             else
             {
                 var move = new BoardMove((Position)ChessBoardComponent.selectedPosition, position);
-                if (Game.CanPerformMove(move))
+                if (GameManager.CanPerformMove(move))
                 {
-                    Game.PerformMove(move);
+                    GameManager.PerformMove(move);
                     UpdateBoardComponentPieces();
                 }
                 ChessBoardComponent.UnSelectAll();
@@ -79,13 +122,21 @@ namespace ChessApp.Web.Pages
 
         protected void UpdateBoardComponentPieces()
         {
-            for (int x = 0; x < Game.Board.Width; x++)
+            for (int x = 0; x < GameManager.Board.Width; x++)
             {
-                for (int y = 0; y < Game.Board.Height; y++)
+                for (int y = 0; y < GameManager.Board.Height; y++)
                 {
-                    var gamePiece = Game.Board.GetPiece(new Position(x, y));
+                    var gamePiece = GameManager.Board.GetPiece(new Position(x, y));
                     ChessBoardComponent.Fields[x, y].Piece = gamePiece == null ? null : new PieceForView() { PieceColor = gamePiece.Color, PieceType = gamePiece.Type };
                 }
+            }
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            if (this.HubConnection != null)
+            {
+                await this.HubConnection.DisposeAsync();
             }
         }
     }

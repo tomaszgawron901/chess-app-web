@@ -1,24 +1,40 @@
 ﻿using ChessApp.Web.Enums;
 using ChessApp.Web.Models;
+using ChessClassLibrary.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace ChessApp.Web.Components
 {
-    public class FullGameOptionsFormModel
-    {
-        public string Player1 { get; set; }
-        public string Player2 { get; set; }
-        public GameVarient GameVarient { get; set; }
-        public int SecondsPerSide { get; set; }
-        public int IncrementInSeconds { get; set; }
-    }
-
     public class FullGameOptionsFormBase: ComponentBase
     {
-        [Parameter] public FullGameOptionsFormModel FullGameOptions { get; set; }
+        [Parameter] public GameOptions GameOptions { get; set; }
+        [Inject] public IStringLocalizer<App> L{ get; set; }
+
+        public string Player1 => GameOptions?.Player1 ?? L["waiting"];
+        public string Player2 => GameOptions?.Player2 ?? L["waiting"];
+
+        public string GameVarient {
+            get {
+                switch (GameOptions?.GameVarient)
+                {
+                    case null:
+                        return @L["not_provided"];
+                    case ChessClassLibrary.enums.GameVarient:
+                        return @L["game_varient.standard"];
+                    default:
+                        return @L["unknown_type"];
+                }
+            }
+        }
+
+        public string SecondsPerSide => GameOptions?.SecondsPerSide.ToString() ?? @L["not_provided"];
+        public string IncrementInSeconds => GameOptions?.IncrementInSeconds.ToString() ?? @L["not_provided"];
+
     }
 }

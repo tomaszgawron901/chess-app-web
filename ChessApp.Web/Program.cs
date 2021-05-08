@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ChessBoardComponents.Interops;
 using ChessApp.Web.Services;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace ChessApp.Web
 {
@@ -31,7 +32,7 @@ namespace ChessApp.Web
             });
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<GameService>();
-            builder.Services.AddSingleton<ChessBoardInterops>();
+            builder.Services.AddScoped<ChessBoardInterops>();
 
             await builder.Build().RunAsync();
 

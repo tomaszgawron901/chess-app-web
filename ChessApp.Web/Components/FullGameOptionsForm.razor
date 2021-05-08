@@ -5,36 +5,33 @@
     <div class="input-group-prepend">
         <span class="input-group-text custom-span">@L["player1"]</span>
     </div>
-    <input type="text" disabled class="form-control" value=@(FullGameOptions?.Player1 ?? L["waiting"]) />
+    <input type="text" disabled class="form-control" value=@Player1 />
 </div>
 
 <div class="input-group mb-3">
     <div class="input-group-prepend">
         <span class="input-group-text custom-span">@L["player2"]</span>
     </div>
-    <input type="text" disabled class="form-control" value=@(FullGameOptions?.Player2 ?? L["waiting"])/>
+    <input type="text" disabled class="form-control" value=@Player2/>
 </div>
 
 <div class="input-group mb-3">
     <div class="input-group-prepend">
         <span class="input-group-text custom-span">@L["varient"]</span>
     </div>
-    <select disabled class="form-control">
-        <option selected=@(FullGameOptions?.GameVarient == GameVarient.Standard)>@L["game_varient.standard"]</option>
-        <option selected=@(FullGameOptions?.GameVarient == null)>@L["not_provided"]</option>
-    </select>
+    <input type="text" disabled class="form-control" value=@GameVarient />
 </div>
 
 <div class="input-group mb-3">
     <div class="input-group-prepend">
         <span class="input-group-text custom-span">@L["time"]</span>
     </div>
-    <input type="text" disabled class="form-control" value=@(FullGameOptions?.SecondsPerSide.ToString() ?? L["not_provided"]) />
+    <input type="text" disabled class="form-control" value=@SecondsPerSide />
 </div>
 
 <div class="input-group mb-3">
     <div class="input-group-prepend">
         <span class="input-group-text custom-span">@L["increment"]</span>
     </div>
-    <input type="text" disabled class="form-control" value=@(FullGameOptions?.IncrementInSeconds.ToString() ?? L["not_provided"]) />
+    <input type="text" disabled class="form-control" value=@IncrementInSeconds/>
 </div>

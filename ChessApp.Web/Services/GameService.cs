@@ -1,4 +1,5 @@
 ﻿using ChessClassLibrary.Models;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,29 @@ namespace ChessApp.Web.Services
                 .PostAsJsonAsync("api/Game/CreateGameRoom", gameOptions);
             response.EnsureSuccessStatusCode();
             return response.Headers.Location.OriginalString;
+        }
+
+        public async Task<GameOptions> GetGameOptionsByKey(string gameKey)
+        {
+            HttpResponseMessage response = await clientFactory
+                .CreateClient("chess_server_client")
+                .GetAsync($"api/Game/GetGameOptionsByKey?gameKey={gameKey}");
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<GameOptions>();
+        }
+
+        public async Task<HubConnection> JoinGame(string roomKey, Action<string, GameOptions> onGameOptionsChange=null)
+        {
+            var connection = new HubConnectionBuilder().WithUrl($"{configuration.GetSection("chess_server_root").Value}gamehub").Build();
+            if (onGameOptionsChange != null)
+            {
+                connection.On<string, GameOptions>("GameOptionsChanged", onGameOptionsChange);
+            }
+            await connection.StartAsync();
+
+            await connection.InvokeAsync("JoinGame", roomKey);
+
+            return connection;
         }
     }
 }

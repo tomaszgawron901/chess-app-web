@@ -21,7 +21,7 @@ namespace ChessBoardComponents
         [Parameter] public bool IsRotated { get; set; } = false;
 
         [Parameter] public EventCallback<Position> OnFieldClicked { get; set; }
-        [Parameter] public EventCallback IsReady { get; set; }
+        [Parameter] public EventCallback<ChessBoardComponentBase> IsReady { get; set; }
 
         public FieldComponent[,] Fields;
 
@@ -37,7 +37,7 @@ namespace ChessBoardComponents
             if (firstRender)
             {
 
-                await this.IsReady.InvokeAsync();
+                await this.IsReady.InvokeAsync(this);
             }
         }
 
