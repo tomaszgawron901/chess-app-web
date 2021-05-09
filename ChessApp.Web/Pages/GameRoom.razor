@@ -7,16 +7,16 @@
     <div class="left-sidebar">
         <div class="card">
             <div class="card-body">
-                <FullGameOptionsForm></FullGameOptionsForm>
+                <FullGameOptionsForm GameOptions="@GameOptions"></FullGameOptionsForm>
                 <CopyUrlField Url="@JoinUrl"></CopyUrlField>
             </div>
         </div>
     </div>
 
     <div class="main">
-        @if (Game != null)
+        @if (GameManager.IsGameCreated)
         {
-            <ChessBoardComponent @ref="ChessBoardComponent" IsRotated="false" Width="Game.Board.Width" Height="Game.Board.Height" OnFieldClicked="OnBoardFieldClicked" IsReady="AfterBoardReady"/>
+            <ChessBoardComponent IsRotated="IsBoardRotated" Pieces="pieces" OnFieldClicked="OnBoardFieldClicked" IsReady="AfterBoardReady"/>
         }
     </div>
 

@@ -1,6 +1,7 @@
 ﻿using ChessBoardComponents.Interops;
 using ChessClassLibrary;
 using ChessClassLibrary.Boards;
+using ChessClassLibrary.Models;
 using ChessClassLibrary.Pieces;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -18,11 +19,12 @@ namespace ChessBoardComponents
         [Parameter] public int Width { get; set; } = 8;
         [Parameter] public int Height { get; set; } = 8;
         [Parameter] public bool IsRotated { get; set; } = false;
+        [Parameter] public PieceForView[,] Pieces { get; set; }
 
         [Parameter] public EventCallback<Position> OnFieldClicked { get; set; }
-        [Parameter] public EventCallback IsReady { get; set; }
+        [Parameter] public EventCallback<ChessBoardComponentBase> IsReady { get; set; }
 
-        public FieldComponent[,] Fields;
+        protected FieldComponent[,] Fields;
 
         protected override async Task OnInitializedAsync()
         {
@@ -35,8 +37,19 @@ namespace ChessBoardComponents
             await base.OnAfterRenderAsync(firstRender);
             if (firstRender)
             {
+                await this.IsReady.InvokeAsync(this);
+            }
+        }
 
-                await this.IsReady.InvokeAsync();
+        protected PieceForView GetPiece(int w, int h)
+        {
+            try
+            {
+                return this.Pieces[w, h];
+            }
+            catch
+            {
+                return null;
             }
         }
 
@@ -92,7 +105,7 @@ namespace ChessBoardComponents
 
         public void SelectPosition(Position position)
         {
-            this.Fields[position.x, position.y].SetBorderColor(BorderColor.Select);
+            this.Fields[position.X, position.Y].SetBorderColor(BorderColor.Select);
             this.selectedPosition = position;
         }
 
@@ -100,7 +113,7 @@ namespace ChessBoardComponents
         {
             foreach (Position position in positions)
             {
-                this.Fields[position.x, position.y].SetBorderColor(BorderColor.Ok);
+                this.Fields[position.X, position.Y].SetBorderColor(BorderColor.Ok);
             }
         }
     }

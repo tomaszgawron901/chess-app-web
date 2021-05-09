@@ -1,7 +1,13 @@
-﻿using ChessBoardComponents;
+﻿using ChessApp.Web.helpers;
+using ChessApp.Web.Services;
+using ChessBoardComponents;
 using ChessClassLibrary;
+using ChessClassLibrary.enums;
 using ChessClassLibrary.Games.ClassicGame;
+using ChessClassLibrary.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,73 +18,66 @@ namespace ChessApp.Web.Pages
     public class GameRoomBase: ComponentBase
     {
         [Inject] protected NavigationManager AppNavigationManager { get; set; }
+        [Inject] IConfiguration Configuration { get; set; }
+        [Inject] protected GameManager GameManager { get; set; }
 
-        protected ChessBoardComponent ChessBoardComponent;
+        protected ChessBoardComponentBase ChessBoardComponent;
 
         [Parameter] public string GameCode { get; set; }
         protected string JoinUrl;
-        protected ClassicGame Game;
+        protected GameOptions GameOptions;
+        protected PieceForView[,] pieces;
+
+        protected bool IsBoardRotated => this.GameManager.ClientColor == PieceColor.Black;
 
         protected override async Task OnInitializedAsync()
         {
-            await base.OnParametersSetAsync();
+            await base.OnInitializedAsync();
             this.JoinUrl = AppNavigationManager.Uri;
-            // TODO check is game with given code exists
-            // TODO GET game options
-            // TODO connect to signalR server
-            // TODO if two users are connected start game
-            Game = new ClassicGame();
-            await OnGameCreate();
 
+            await this.GameManager.PrepareGameRoom(this.GameCode, this);
         }
 
-        protected async Task OnGameCreate()
+        protected void AfterBoardReady(ChessBoardComponentBase board)
         {
+            this.ChessBoardComponent = board;
         }
 
-        public void AfterBoardReady()
-        {
-            UpdateBoardComponentPieces();
-        }
 
-        protected void OnBoardFieldClicked(Position position)
+        protected async Task OnBoardFieldClicked(Position position)
         {
-            Console.WriteLine(position.x + " " + position.y);
+            Console.WriteLine(position.X + " " + position.Y);
             if (ChessBoardComponent.selectedPosition == null)
             {
                 
-                var pieceAtPosition = Game.Board.GetPiece(position);
+                var pieceAtPosition = GameManager.GetPieceForViewAtPosition(position);
                 if (pieceAtPosition != null)
                 {
-                    if (pieceAtPosition.Color == Game.CurrentPlayerColor)
+                    if (pieceAtPosition.PieceColor == GameManager.CurrentPlayerColor)
                     {
                         ChessBoardComponent.SelectPosition(position);
-                        ChessBoardComponent.ShowMoves(pieceAtPosition.MoveSet.Select(x => position + x.Shift));
+                        ChessBoardComponent.ShowMoves(GameManager.GetPieceMoveSetAtPosition(position).Select(x => position + x.Shift));
                     }
                 }
             }
             else
             {
                 var move = new BoardMove((Position)ChessBoardComponent.selectedPosition, position);
-                if (Game.CanPerformMove(move))
-                {
-                    Game.PerformMove(move);
-                    UpdateBoardComponentPieces();
-                }
+                await GameManager.TryPerformMove(move);
                 ChessBoardComponent.UnSelectAll();
             }
         }
 
-        protected void UpdateBoardComponentPieces()
+        public void SetBoardPieces(PieceForView[,] pieces)
         {
-            for (int x = 0; x < Game.Board.Width; x++)
-            {
-                for (int y = 0; y < Game.Board.Height; y++)
-                {
-                    var gamePiece = Game.Board.GetPiece(new Position(x, y));
-                    ChessBoardComponent.Fields[x, y].Piece = gamePiece == null ? null : new PieceForView() { PieceColor = gamePiece.Color, PieceType = gamePiece.Type };
-                }
-            }
+            this.pieces = pieces;
+            this.StateHasChanged();
+        }
+
+        public void SetGameOptions(GameOptions gameOptions)
+        {
+            this.GameOptions = gameOptions;
+            this.StateHasChanged();
         }
     }
 }

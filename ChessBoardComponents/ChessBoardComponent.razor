@@ -15,7 +15,7 @@
                 }
                 int h = height;
                 int w = width;
-                <FieldComponent BackgroudColor="@color" @ref=@Fields[w,h]  OnFieldClicked="() => { OnFieldClick(w, h); }" />
+                <FieldComponent BackgroudColor="@color" @ref=@Fields[w,h] Piece="GetPiece(w, h)"  OnFieldClicked="() => { OnFieldClick(w, h); }" />
             }
         </div>
     }

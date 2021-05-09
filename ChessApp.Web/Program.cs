@@ -5,12 +5,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using ChessBoardComponents.Interops;
+using ChessApp.Web.Services;
+using Microsoft.AspNetCore.SignalR.Client;
+using ChessApp.Web.helpers;
 
 namespace ChessApp.Web
 {
@@ -20,13 +24,22 @@ namespace ChessApp.Web
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
+
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
             builder.Services.AddScoped<IStringLocalizer<App>, StringLocalizer<App>>();
 
+            builder.Services.AddHttpClient("chess_server_client", client => {
+                client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("chess_server_root"));
+            });
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-            builder.Services.AddSingleton<ChessBoardInterops>();
+            builder.Services.AddScoped<GameService>();
+            builder.Services.AddScoped<ChessBoardInterops>();
+
+            builder.Services.AddTransient<GameManager>();
 
             await builder.Build().RunAsync();
+
+            
         }
     }
 }
