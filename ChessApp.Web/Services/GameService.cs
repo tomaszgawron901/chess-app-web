@@ -13,32 +13,33 @@ namespace ChessApp.Web.Services
     public class GameService
     {
         private readonly IConfiguration configuration;
-        private readonly IHttpClientFactory clientFactory;
-        public GameService(IHttpClientFactory clientFactory, IConfiguration configuration)
+        private readonly HubConnection hubConnection;
+        public GameService(IConfiguration configuration)
         {
             this.configuration = configuration;
-            this.clientFactory = clientFactory;
+            this.hubConnection = this.GetHubConnection();
+            this.hubConnection.StartAsync();
         }
 
-        public async Task<string> CreateNewGameRoom(GameOptions gameOptions)
+        public async Task<HubConnection> EnsureIsConnected()
         {
-            HttpResponseMessage response = await clientFactory
-                .CreateClient("chess_server_client")
-                .PostAsJsonAsync("api/Game/CreateGameRoom", gameOptions);
-            response.EnsureSuccessStatusCode();
-            return response.Headers.Location.OriginalString;
+            if(!(this.hubConnection.State == HubConnectionState.Connecting || this.hubConnection.State == HubConnectionState.Connected))
+            {
+                await this.hubConnection.StartAsync();
+            }
+            return this.hubConnection;
         }
 
-        public async Task<GameOptions> GetGameOptionsByKey(string gameKey)
+        public Task<string> CreateNewGameRoom(GameOptions gameOptions)
         {
-            HttpResponseMessage response = await clientFactory
-                .CreateClient("chess_server_client")
-                .GetAsync($"api/Game/GetGameOptionsByKey?gameKey={gameKey}");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<GameOptions>();
+            return this.EnsureIsConnected()
+                .ContinueWith(hubTask =>
+                {
+                    return hubTask.Result.InvokeAsync<string>("CreateGameRoom", gameOptions);
+                }).Unwrap();
         }
 
-        public HubConnection GetHubConnection()
+        private HubConnection GetHubConnection()
         {
             return new HubConnectionBuilder().WithUrl($"{configuration.GetSection("chess_server_root").Value}gamehub").Build();
         }

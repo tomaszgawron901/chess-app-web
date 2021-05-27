@@ -1,4 +1,5 @@
-﻿using ChessApp.Web.Pages;
+﻿using ChessApp.Web.Models;
+using ChessApp.Web.Pages;
 using ChessApp.Web.Services;
 using ChessBoardComponents;
 using ChessClassLibrary.Boards;
@@ -25,6 +26,7 @@ namespace ChessApp.Web.helpers
         private IClassicGame game;
 
         public bool IsGameCreated { get; private set; }
+        public bool IsGameReadyToPlay { get; private set; }
 
         public GameManager(GameService gameService)
         {
@@ -34,8 +36,7 @@ namespace ChessApp.Web.helpers
 
         private async Task Connect()
         {
-            this.hubConnection = gameService.GetHubConnection();
-            await this.hubConnection.StartAsync();
+            this.hubConnection = await gameService.EnsureIsConnected();
         }
 
         private void SetListeners()
@@ -46,14 +47,67 @@ namespace ChessApp.Web.helpers
                 {
                     this.gameOptions = gameOptions;
                     this.gameRoom.SetGameOptions(this.gameOptions);
+                    this.CreateGame();
                 }
             });
 
-            this.hubConnection.On<string, BoardMove>("PerformMove", (gameKey, boardMove) => {
+            this.hubConnection.On<string, BoardMove, SharedClock, SharedClock> ("PerformMove", (gameKey, boardMove, clock1, clock2) => {
                 if (gameKey == this.gameCode)
                 {
+                    string message = "";
+                    if(this.CurrentPlayerColor == PieceColor.White)
+                    {
+                        message += "White ";
+                    }
+                    else if (this.CurrentPlayerColor == PieceColor.Black)
+                    {
+                        message += "Black ";
+                    }
                     this.game.TryPerformMove(boardMove);
+                    gameRoom.UnSelectBoard();
                     this.gameRoom.SetBoardPieces(GetPiecesForView());
+                    this.gameRoom.ChatWindow.AddMessage($"{message}{boardMove}");
+                    if (ClientColor == PieceColor.Black)
+                    {
+                        this.gameRoom.SetTimer1(clock1);
+                        this.gameRoom.SetTimer2(clock2);
+                    }
+                    else
+                    {
+                        this.gameRoom.SetTimer1(clock2);
+                        this.gameRoom.SetTimer2(clock1);
+                    }
+                }
+            });
+
+            this.hubConnection.On<string, PieceColor?>("GameEnded", (gameKey, winner) => {
+                if (gameKey == this.gameCode)
+                {
+                    if (winner == null)
+                    {
+                        this.gameRoom.ChatWindow.AddMessage("Game ended: Stalemate");
+                    }
+                    else if(winner == PieceColor.White)
+                    {
+                        this.gameRoom.ChatWindow.AddMessage("Game ended: White won");
+                    }
+                    else if (winner == PieceColor.Black)
+                    {
+                        this.gameRoom.ChatWindow.AddMessage("Game ended: Black won");
+                    }
+
+                }
+            });
+
+            this.hubConnection.On<string, string>("ServerMessage", (gameKey, message) => {
+                if (gameKey == this.gameCode)
+                {
+                }
+            });
+
+            this.hubConnection.On<string, string>("UserMessage", (gameKey, message) => {
+                if (gameKey == this.gameCode)
+                {
                 }
             });
         }
@@ -97,6 +151,7 @@ namespace ChessApp.Web.helpers
             await this.JoinGame(gameCode);
             this.SetListeners();
             this.CreateGame();
+            this.gameRoom.ChatWindow.AddMessage("You have successfully connected to the game.");
         }
 
 
@@ -113,6 +168,19 @@ namespace ChessApp.Web.helpers
             }
             this.gameRoom.SetBoardPieces(GetPiecesForView());
             this.IsGameCreated = true;
+
+            if (this.gameOptions.Player1 != null && this.gameOptions.Player2 != null)
+            {
+                this.IsGameReadyToPlay = true;
+            }
+            else
+            {
+                this.IsGameReadyToPlay = false;
+            }
+            this.gameRoom.UnSelectBoard();
+
+            this.gameRoom.SetTimer1(new SharedClock() { Time = gameOptions.MinutesPerSide * 60000, Started = false });
+            this.gameRoom.SetTimer2(new SharedClock() { Time = gameOptions.MinutesPerSide * 60000, Started = false });
         }
 
         private async Task SetAsReady()
@@ -160,7 +228,7 @@ namespace ChessApp.Web.helpers
 
         public IEnumerable<PieceMove> GetPieceMoveSetAtPosition(Position position)
         {
-            if (game != null && CurrentPlayerColor == ClientColor)
+            if (game != null)
             {
                 return game.GetPieceMoveSetAtPosition(position);
             }
@@ -170,6 +238,7 @@ namespace ChessApp.Web.helpers
         private async Task PerformMove(BoardMove move)
         {
             await this.hubConnection.InvokeAsync("PerformMove", this.gameCode, move);
+            gameRoom.UnSelectBoard();
         }
 
         public async Task TryPerformMove(BoardMove move)
@@ -179,6 +248,7 @@ namespace ChessApp.Web.helpers
                 await PerformMove(move);
             }
         }
+
 
         public PieceForView GetPieceForViewAtPosition(Position position)
         {
