@@ -31,7 +31,7 @@ namespace ChessBoardComponents
 
     public class FieldComponentBase : ComponentBase
     {
-        [Parameter]  public BackgroudColor BackgroudColor { get; set; }
+        [Parameter] public BackgroudColor BackgroudColor { get; set; }
         [Parameter] public BorderColor BorderColor { get; set; }
         [Parameter] public PieceForView Piece { get; set; }
 

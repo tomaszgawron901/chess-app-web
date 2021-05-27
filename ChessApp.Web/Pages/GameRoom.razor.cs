@@ -1,4 +1,6 @@
-﻿using ChessApp.Web.helpers;
+﻿using ChessApp.Web.Components;
+using ChessApp.Web.helpers;
+using ChessApp.Web.Models;
 using ChessApp.Web.Services;
 using ChessBoardComponents;
 using ChessClassLibrary;
@@ -22,11 +24,14 @@ namespace ChessApp.Web.Pages
         [Inject] protected GameManager GameManager { get; set; }
 
         protected ChessBoardComponentBase ChessBoardComponent;
+        public ChatWindowBase ChatWindow;
 
         [Parameter] public string GameCode { get; set; }
         protected string JoinUrl;
         protected GameOptions GameOptions;
         protected PieceForView[,] pieces;
+        protected TimerComponent timer1;
+        protected TimerComponent timer2;
 
         protected bool IsBoardRotated => this.GameManager.ClientColor == PieceColor.Black;
 
@@ -35,7 +40,15 @@ namespace ChessApp.Web.Pages
             await base.OnInitializedAsync();
             this.JoinUrl = AppNavigationManager.Uri;
 
-            await this.GameManager.PrepareGameRoom(this.GameCode, this);
+            try
+            {
+                await this.GameManager.PrepareGameRoom(this.GameCode, this);
+            }
+            catch
+            {
+                AppNavigationManager.NavigateTo($"/");
+            }
+            
         }
 
         protected void AfterBoardReady(ChessBoardComponentBase board)
@@ -43,35 +56,55 @@ namespace ChessApp.Web.Pages
             this.ChessBoardComponent = board;
         }
 
+        public void SetTimer1(SharedClock clock)
+        {
+            this.timer1.SetClock(clock);
+        }
+
+        public void SetTimer2(SharedClock clock)
+        {
+            this.timer2.SetClock(clock);
+        }
+
 
         protected async Task OnBoardFieldClicked(Position position)
         {
-            Console.WriteLine(position.X + " " + position.Y);
-            if (ChessBoardComponent.selectedPosition == null)
+            if (this.GameManager.IsGameReadyToPlay)
             {
-                
-                var pieceAtPosition = GameManager.GetPieceForViewAtPosition(position);
-                if (pieceAtPosition != null)
+                if (ChessBoardComponent.selectedPosition == null)
                 {
-                    if (pieceAtPosition.PieceColor == GameManager.CurrentPlayerColor)
+                    var pieceAtPosition = GameManager.GetPieceForViewAtPosition(position);
+                    if (pieceAtPosition != null)
                     {
-                        ChessBoardComponent.SelectPosition(position);
-                        ChessBoardComponent.ShowMoves(GameManager.GetPieceMoveSetAtPosition(position).Select(x => position + x.Shift));
+                        if (pieceAtPosition.PieceColor == GameManager.ClientColor)
+                        {
+                            ChessBoardComponent.SelectPosition(position);
+                            ChessBoardComponent.ShowMoves(GameManager.GetPieceMoveSetAtPosition(position).Select(x => position + x.Shift));
+                        }
                     }
                 }
+                else
+                {
+                    var move = new BoardMove((Position)ChessBoardComponent.selectedPosition, position);
+                    await GameManager.TryPerformMove(move);
+                    ChessBoardComponent.UnSelectAll();
+                }
             }
-            else
-            {
-                var move = new BoardMove((Position)ChessBoardComponent.selectedPosition, position);
-                await GameManager.TryPerformMove(move);
-                ChessBoardComponent.UnSelectAll();
-            }
+
         }
 
         public void SetBoardPieces(PieceForView[,] pieces)
         {
             this.pieces = pieces;
             this.StateHasChanged();
+        }
+
+        public void UnSelectBoard()
+        {
+            if (ChessBoardComponent != null)
+            {
+                ChessBoardComponent.UnSelectAll();
+            }
         }
 
         public void SetGameOptions(GameOptions gameOptions)

@@ -13,9 +13,9 @@
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <span class="input-group-text custom-span">@L["seconds_per_side"]</span>
+            <span class="input-group-text custom-span">@L["minutes_per_side"]</span>
         </div>
-        <InputNumber disabled="@IsDisabled" class="form-control" @bind-Value="GameOptions.SecondsPerSide" />
+        <InputNumber disabled="@IsDisabled" class="form-control" @bind-Value="GameOptions.MinutesPerSide" />
     </div>
 
 
@@ -30,7 +30,7 @@
         <div class="input-group-prepend">
             <span class="input-group-text custom-span">@L["side"]</span>
         </div>
-        <InputSelect disabled="@IsDisabled" class="form-control" @bind-Value=GameOptions.Side>
+        <InputSelect disabled="@IsDisabled" class="form-control" @bind-Value=Side>
             <option value=@Side.White>@L["side.white"]</option>
             <option value=@Side.Black>@L["side.black"]</option>
             <option value=@Side.Random>@L["side.random"]</option>

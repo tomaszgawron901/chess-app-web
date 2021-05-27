@@ -14,17 +14,18 @@
     </div>
 
     <div class="main">
+        <TimerComponent @ref="timer1"></TimerComponent>
         @if (GameManager.IsGameCreated)
         {
-            <ChessBoardComponent IsRotated="IsBoardRotated" Pieces="pieces" OnFieldClicked="OnBoardFieldClicked" IsReady="AfterBoardReady"/>
+            <ChessBoardComponent IsRotated="IsBoardRotated" Pieces="pieces" OnFieldClicked="OnBoardFieldClicked" IsReady="AfterBoardReady" />
         }
+        <TimerComponent @ref="timer2"></TimerComponent>
     </div>
 
     <div class="right-sidebar">
-        <div class="card">
+        <div class="card" style="height: 100%">
             <div class="card-body">
-                <FullGameOptionsForm></FullGameOptionsForm>
-                <CopyUrlField Url="@JoinUrl"></CopyUrlField>
+                <ChatWindow @ref="ChatWindow"></ChatWindow>
             </div>
         </div>
     </div>

@@ -141,11 +141,11 @@
   <data name="increment_in_seconds" xml:space="preserve">
     <value>Increment in seconds</value>
   </data>
+  <data name="minutes_per_side" xml:space="preserve">
+    <value>Minutes per side</value>
+  </data>
   <data name="not_provided" xml:space="preserve">
     <value>not provided</value>
-  </data>
-  <data name="seconds_per_side" xml:space="preserve">
-    <value>Seconds per side</value>
   </data>
   <data name="side" xml:space="preserve">
     <value>Side</value>

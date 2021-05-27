@@ -33,8 +33,8 @@ namespace ChessApp.Web.Components
             }
         }
 
-        public string SecondsPerSide => GameOptions?.SecondsPerSide.ToString() ?? @L["not_provided"];
-        public string IncrementInSeconds => GameOptions?.IncrementInSeconds.ToString() ?? @L["not_provided"];
+        public string MinutesPerSide => GameOptions?.MinutesPerSide.ToString()+" min" ?? @L["not_provided"];
+        public string IncrementInSeconds => GameOptions?.IncrementInSeconds.ToString()+" sec" ?? @L["not_provided"];
 
     }
 }
