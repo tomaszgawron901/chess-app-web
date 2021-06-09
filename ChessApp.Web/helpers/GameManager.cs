@@ -162,6 +162,9 @@ namespace ChessApp.Web.helpers
                 case GameVarient.Standard:
                     this.game = new ClassicGame();
                     break;
+                case GameVarient.Knightmate:
+                    this.game = new KnightmateGame();
+                    break;
                 default:
                     this.game = null;
                     throw new NotSupportedException("Game type not supported");

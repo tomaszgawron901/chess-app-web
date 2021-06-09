@@ -48,6 +48,12 @@ namespace ChessBoardComponents
                 case PieceType.King:
                     sb.Append("King");
                     break;
+                case PieceType.Commoner:
+                    sb.Append("Commoner");
+                    break;
+                case PieceType.Centaur:
+                    sb.Append("Centaur");
+                    break;
                 default:
                     break;
             }
