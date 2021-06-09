@@ -132,6 +132,9 @@
   <data name="game_varient" xml:space="preserve">
     <value>Game Varient</value>
   </data>
+  <data name="game_varient.knightmate" xml:space="preserve">
+    <value>Knightmate</value>
+  </data>
   <data name="game_varient.standard" xml:space="preserve">
     <value>Standard</value>
   </data>
