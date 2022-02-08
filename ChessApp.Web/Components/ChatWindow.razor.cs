@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ChessApp.Web.Components
 {
-    public class ChatWindowBase : ComponentBase
+    public partial class ChatWindow : ComponentBase
     {
         protected List<(DateTime time, string message)> MessagesList { get; private set; }
 
-        public ChatWindowBase()
+        public ChatWindow()
         {
             this.MessagesList = new List<(DateTime time, string message)>();
         }

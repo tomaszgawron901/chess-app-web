@@ -32,3 +32,7 @@
     box-sizing: border-box;
     min-width: 300px;
 }
+
+.right-sidebar .card-body{
+    overflow-y: auto;
+}

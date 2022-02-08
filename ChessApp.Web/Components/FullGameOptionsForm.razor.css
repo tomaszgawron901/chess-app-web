@@ -1,3 +1,15 @@
-﻿.input-group-prepend > span {
+﻿
+.input-group-prepend .custom-span {
     width: 100px;
 }
+
+.input-group-prepend .custom-span.white {
+    background-color: white;
+    color: black;
+}
+
+.input-group-prepend .custom-span.black {
+    background-color: black;
+    color: white;
+}
+

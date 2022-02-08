@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ChessApp.Web.Components
 {
-    public class TimerComponentBase: ComponentBase
+    public partial class TimerComponent: ComponentBase
     {
         private CancellationTokenSource cts;
         public string timeString { get; private set; }
@@ -17,7 +17,7 @@ namespace ChessApp.Web.Components
 
         public bool isGoing { get; private set; }
 
-        public TimerComponentBase()
+        public TimerComponent()
         {
             this.frequency = 1000;
             this.timeString = "00:00";

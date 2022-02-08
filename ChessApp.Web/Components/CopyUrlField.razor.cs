@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace ChessApp.Web.Components
 {
-    public class CopyUrlFieldBase: ComponentBase
+    public partial class CopyUrlField: ComponentBase
     {
         [Inject] protected IJSRuntime JSRuntime { get; set; }
         [Parameter] public string Url { get; set; }
-
 
         protected ElementReference UrlInput;
 

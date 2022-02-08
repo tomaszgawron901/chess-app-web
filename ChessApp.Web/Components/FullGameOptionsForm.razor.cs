@@ -11,10 +11,9 @@ using System.Threading.Tasks;
 
 namespace ChessApp.Web.Components
 {
-    public class FullGameOptionsFormBase: ComponentBase
+    public partial class FullGameOptionsForm: ComponentBase
     {
         [Parameter] public GameOptions GameOptions { get; set; }
-        [Inject] public IStringLocalizer<App> L{ get; set; }
 
         public string Player1 => GameOptions?.Player1 ?? L["waiting"];
         public string Player2 => GameOptions?.Player2 ?? L["waiting"];
