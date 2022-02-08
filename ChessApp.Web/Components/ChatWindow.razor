@@ -1,6 +1,4 @@
-﻿@inherits ChatWindowBase
-
-<div class="chat-container">
+﻿<div class="chat-container">
     @foreach(var item in MessagesList)
     {
         <div class="message-container">@item.time.ToShortTimeString(): @item.message</div>

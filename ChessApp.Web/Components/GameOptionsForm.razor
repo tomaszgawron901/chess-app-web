@@ -1,6 +1,4 @@
-﻿@inherits GameOptionsFormBase
-
-<EditForm Model="@GameOptions" OnValidSubmit="@HandleValidSubmit" class=" mb-3">
+﻿<EditForm Model="@GameOptions" OnValidSubmit="@HandleValidSubmit" class=" mb-3">
     <DataAnnotationsValidator />
     <div class="input-group mb-3">
         <div class="input-group-prepend">
@@ -37,9 +35,8 @@
             <option value=@Side.Random>@L["side.random"]</option>
         </InputSelect>
     </div>
-    @if(!IsDisabled) {
+    @if(!IsDisabled){
         <button type="submit" class="btn btn-primary">@L["button.create"]</button>
-        <button type="button" class="btn btn-danger" @onclick="HandleCancelClicked">@L["button.cancel"]</button>
     }
 
 

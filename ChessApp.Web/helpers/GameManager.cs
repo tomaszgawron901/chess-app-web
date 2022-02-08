@@ -22,7 +22,7 @@ namespace ChessApp.Web.helpers
 
         private string gameCode;
         private GameOptions gameOptions;
-        private GameRoomBase gameRoom;
+        private GameRoom gameRoom;
         private IClassicGame game;
 
         public bool IsGameCreated { get; private set; }
@@ -139,7 +139,7 @@ namespace ChessApp.Web.helpers
             }
         }
 
-        public async Task PrepareGameRoom(string gameCode, GameRoomBase gameRoom)
+        public async Task PrepareGameRoom(string gameCode, GameRoom gameRoom)
         {
             if (gameCode == null || gameRoom == null)
             {

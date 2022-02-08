@@ -5,13 +5,10 @@ using ChessClassLibrary.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ChessApp.Web.Components
 {
-    public class GameOptionsFormBase: ComponentBase
+    public partial class GameOptionsForm: ComponentBase
     {
         [Parameter] public GameOptions GameOptions { get; set; } = new GameOptions();
         [Parameter] public bool IsDisabled { get; set; } = false;
@@ -41,11 +38,6 @@ namespace ChessApp.Web.Components
                 }
             }
             this.OnValidSubmit.InvokeAsync(this.GameOptions);
-        }
-
-        protected void HandleCancelClicked()
-        {
-            this.OnCancel.InvokeAsync();
         }
     }
 }

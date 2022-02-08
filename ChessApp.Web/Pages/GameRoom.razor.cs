@@ -17,14 +17,14 @@ using System.Threading.Tasks;
 
 namespace ChessApp.Web.Pages
 {
-    public class GameRoomBase: ComponentBase
+    public partial class GameRoom: ComponentBase
     {
         [Inject] protected NavigationManager AppNavigationManager { get; set; }
         [Inject] IConfiguration Configuration { get; set; }
         [Inject] protected GameManager GameManager { get; set; }
 
         protected ChessBoardComponentBase ChessBoardComponent;
-        public ChatWindowBase ChatWindow;
+        public ChatWindow ChatWindow;
 
         [Parameter] public string GameCode { get; set; }
         protected string JoinUrl;
