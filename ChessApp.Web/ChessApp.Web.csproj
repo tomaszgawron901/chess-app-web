@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\chess-class-lib\ChessClassLibrary\ChessClassLibrary.csproj" />
+    <ProjectReference Include="..\chess-class-lib\ChessClassLib\ChessClassLib.csproj" />
     <ProjectReference Include="..\ChessBoardComponents\ChessBoardComponents.csproj" />
   </ItemGroup>
 
