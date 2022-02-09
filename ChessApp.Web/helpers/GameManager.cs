@@ -186,11 +186,6 @@ namespace ChessApp.Web.helpers
             this.gameRoom.SetTimer2(new SharedClock() { Time = gameOptions.MinutesPerSide * 60000, Started = false });
         }
 
-        private async Task SetAsReady()
-        {
-            await this.hubConnection.InvokeAsync("SetAsReady"); // -----------
-        }
-
         public PieceColor ClientColor { get; private set; }
 
         public PieceColor CurrentPlayerColor => game != null ? game.CurrentPlayerColor : throw new NullReferenceException("Inner game does not exist.");
