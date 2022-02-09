@@ -24,6 +24,7 @@ namespace ChessApp.Web.Pages
         [Inject] protected GameManager GameManager { get; set; }
 
         protected ChessBoardComponentBase ChessBoardComponent;
+        protected FullGameOptionsForm FullGameOptionsForm;
         public ChatWindow ChatWindow;
 
         [Parameter] public string GameCode { get; set; }
@@ -34,6 +35,7 @@ namespace ChessApp.Web.Pages
         protected TimerComponent timer2;
 
         protected bool IsBoardRotated => this.GameManager.ClientColor == PieceColor.Black;
+        protected PieceColor? CurrentPlayer => this.GameManager != null && this.GameManager.IsGameReadyToPlay ? this.GameManager.CurrentPlayerColor : null;
 
         protected override async Task OnInitializedAsync()
         {
@@ -112,5 +114,11 @@ namespace ChessApp.Web.Pages
             this.GameOptions = gameOptions;
             this.StateHasChanged();
         }
+
+        public void Update()
+        {
+            this.StateHasChanged();
+        }
+
     }
 }

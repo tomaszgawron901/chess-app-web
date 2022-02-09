@@ -1,11 +1,11 @@
-﻿<div class="input-group mb-3">
+﻿<div class="input-group mb-3 bordered @(CurrentPlayer == PieceColor.White ? "playing" : "")">
     <div class="input-group-prepend">
-        <span class="input-group-text custom-span white">@L["player1"]</span>
+        <span class="input-group-text custom-span white ">@L["player1"]</span>
     </div>
     <input type="text" disabled class="form-control" value=@Player1 />
 </div>
 
-<div class="input-group mb-3">
+<div class="input-group mb-3 bordered @(CurrentPlayer == PieceColor.Black ? "playing" : "")">
     <div class="input-group-prepend">
         <span class="input-group-text custom-span black">@L["player2"]</span>
     </div>

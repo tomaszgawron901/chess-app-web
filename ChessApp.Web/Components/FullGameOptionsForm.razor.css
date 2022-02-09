@@ -13,3 +13,13 @@
     color: white;
 }
 
+.bordered{
+    border-style: solid;
+    border-width: 3px;
+    border-color: transparent;
+}
+
+.bordered.playing {
+    border-color: cornflowerblue;
+}
+

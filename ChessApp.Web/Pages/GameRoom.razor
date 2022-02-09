@@ -6,7 +6,7 @@
     <div class="left-sidebar">
         <div class="card">
             <div class="card-body">
-                <FullGameOptionsForm GameOptions="@GameOptions"></FullGameOptionsForm>
+                <FullGameOptionsForm @ref="FullGameOptionsForm" GameOptions="@GameOptions" CurrentPlayer="@CurrentPlayer"></FullGameOptionsForm>
                 <CopyUrlField Url="@JoinUrl"></CopyUrlField>
             </div>
         </div>
