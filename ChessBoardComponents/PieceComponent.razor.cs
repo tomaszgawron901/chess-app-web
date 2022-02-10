@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ChessBoardComponents
 {
-    public class PieceComponentBase : ComponentBase
+    public partial class PieceComponent : ComponentBase
     {
         [Parameter] public PieceColor PieceColor { get; set; }
         [Parameter] public PieceType PieceType { get; set; }

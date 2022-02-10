@@ -23,7 +23,7 @@ namespace ChessApp.Web.Pages
         [Inject] IConfiguration Configuration { get; set; }
         [Inject] protected GameManager GameManager { get; set; }
 
-        protected ChessBoardComponentBase ChessBoardComponent;
+        protected ChessBoardComponent ChessBoardComponent;
         protected FullGameOptionsForm FullGameOptionsForm;
         public ChatWindow ChatWindow;
 
@@ -53,7 +53,7 @@ namespace ChessApp.Web.Pages
             
         }
 
-        protected void AfterBoardReady(ChessBoardComponentBase board)
+        protected void AfterBoardReady(ChessBoardComponent board)
         {
             this.ChessBoardComponent = board;
         }

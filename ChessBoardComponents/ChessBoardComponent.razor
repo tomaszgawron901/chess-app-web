@@ -1,21 +1,29 @@
-﻿@inherits ChessBoardComponentBase
-@using ChessClassLibrary.Pieces;
+﻿@using ChessClassLibrary.Pieces;
 @using ChessClassLibrary;
 
+@{
+    BackgroudColor bgColor;
+    BackgroudColor letterColor;
+}
 <div class="board">
     @foreach (int height in GetYIndexes())
     {
         <div class="boardRow">
             @foreach (int width in GetXIndexes())
             {
-                BackgroudColor color = BackgroudColor.Light;
                 @if ((height + width) % 2 == 0)
                 {
-                    color = color = BackgroudColor.Dark;
+                    bgColor = BackgroudColor.Dark;
+                    letterColor = BackgroudColor.Light;
+                }
+                else
+                {
+                    bgColor = BackgroudColor.Light;
+                    letterColor = BackgroudColor.Dark;
                 }
                 int h = height;
                 int w = width;
-                <FieldComponent BackgroudColor="@color" @ref=@Fields[w,h] Piece="GetPiece(w, h)"  OnFieldClicked="() => { OnFieldClick(w, h); }" />
+                <FieldComponent BackgroudColor="@bgColor" LetterColor="@letterColor" TopLetter="@GetNumber(w, h)" BottomLetter="@GetLetter(w, h)" @ref=@Fields[w,h] Piece="GetPiece(w, h)" OnFieldClicked="() => { OnFieldClick(w, h); }" />
             }
         </div>
     }

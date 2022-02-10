@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ChessBoardComponents
 {
-    public class ChessBoardComponentBase : ComponentBase
+    public partial class ChessBoardComponent : ComponentBase
     {
         public Position? selectedPosition;
 
@@ -22,7 +22,7 @@ namespace ChessBoardComponents
         [Parameter] public PieceForView[,] Pieces { get; set; }
 
         [Parameter] public EventCallback<Position> OnFieldClicked { get; set; }
-        [Parameter] public EventCallback<ChessBoardComponentBase> IsReady { get; set; }
+        [Parameter] public EventCallback<ChessBoardComponent> IsReady { get; set; }
 
         protected FieldComponent[,] Fields;
 
@@ -87,6 +87,24 @@ namespace ChessBoardComponents
                     yield return i;
                 }
             }
+        }
+
+        protected char GetLetter(int w, int h)
+        {
+            if ((IsRotated && h == Height - 1) || (!IsRotated && h == 0))
+            {
+                return (char)('a' + w);
+            }
+            return ' ';
+        }
+
+        protected char GetNumber(int w, int h)
+        {
+            if ((IsRotated && w == 0) || (!IsRotated && w == Width - 1))
+            {
+                return (char)('1' + h);
+            }
+            return ' ';
         }
 
         protected async void OnFieldClick(int x, int y)
