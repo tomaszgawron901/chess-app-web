@@ -2,7 +2,6 @@
 using ChessApp.Web.Pages;
 using ChessApp.Web.Services;
 using ChessBoardComponents;
-using ChessClassLibrary.Boards;
 using ChessClassLibrary.enums;
 using ChessClassLibrary.Games;
 using ChessClassLibrary.Games.ClassicGame;
@@ -181,6 +180,7 @@ namespace ChessApp.Web.helpers
                 this.IsGameReadyToPlay = false;
             }
             this.gameRoom.UnSelectBoard();
+            this.gameRoom.Update();
 
             this.gameRoom.SetTimer1(new SharedClock() { Time = gameOptions.MinutesPerSide * 60000, Started = false });
             this.gameRoom.SetTimer2(new SharedClock() { Time = gameOptions.MinutesPerSide * 60000, Started = false });
@@ -188,7 +188,7 @@ namespace ChessApp.Web.helpers
 
         public PieceColor ClientColor { get; private set; }
 
-        public PieceColor CurrentPlayerColor => game != null ? game.CurrentPlayerColor : throw new NullReferenceException("Inner game does not exist.");
+        public PieceColor? CurrentPlayerColor => game != null ? game.CurrentPlayerColor : null;
 
         public GameState GameState => game != null ? game.GameState : GameState.NotStarted;
 

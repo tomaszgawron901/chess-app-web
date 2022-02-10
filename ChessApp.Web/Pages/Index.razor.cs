@@ -1,11 +1,4 @@
-﻿using ChessApp.Web.Models;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Localization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ChessClassLibrary.Games.ClassicGame;
+﻿using Microsoft.AspNetCore.Components;
 using ChessApp.Web.Services;
 using ChessClassLibrary.Models;
 

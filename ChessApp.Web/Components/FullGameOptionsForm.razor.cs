@@ -1,12 +1,6 @@
-﻿using ChessApp.Web.Enums;
-using ChessApp.Web.Models;
+﻿using ChessClassLibrary.enums;
 using ChessClassLibrary.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Localization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 
 namespace ChessApp.Web.Components
@@ -14,6 +8,8 @@ namespace ChessApp.Web.Components
     public partial class FullGameOptionsForm: ComponentBase
     {
         [Parameter] public GameOptions GameOptions { get; set; }
+        [Parameter] public PieceColor? CurrentPlayer { get; set; } = null;
+        [Parameter] public PieceColor? UserPlayer { get; set; } = null;
 
         public string Player1 => GameOptions?.Player1 ?? L["waiting"];
         public string Player2 => GameOptions?.Player2 ?? L["waiting"];
@@ -34,6 +30,5 @@ namespace ChessApp.Web.Components
 
         public string MinutesPerSide => GameOptions?.MinutesPerSide.ToString()+" min" ?? @L["not_provided"];
         public string IncrementInSeconds => GameOptions?.IncrementInSeconds.ToString()+" sec" ?? @L["not_provided"];
-
     }
 }

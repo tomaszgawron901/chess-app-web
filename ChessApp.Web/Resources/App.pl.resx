@@ -118,63 +118,69 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="button.cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Anuluj</value>
   </data>
   <data name="button.confirm" xml:space="preserve">
-    <value>Confirm</value>
+    <value>Zatwierdź</value>
   </data>
   <data name="button.create" xml:space="preserve">
-    <value>Create</value>
+    <value>Utwórz</value>
   </data>
   <data name="create_new_game" xml:space="preserve">
-    <value>Create new game</value>
+    <value>Utwórz nową grę</value>
   </data>
   <data name="game_varient" xml:space="preserve">
-    <value>Game Varient</value>
+    <value>Wariant gry</value>
   </data>
   <data name="game_varient.knightmate" xml:space="preserve">
     <value>Knightmate</value>
   </data>
   <data name="game_varient.standard" xml:space="preserve">
-    <value>Standard</value>
+    <value>Standardowy</value>
   </data>
   <data name="increment" xml:space="preserve">
-    <value>Increment</value>
+    <value>Przyrost</value>
   </data>
   <data name="increment_in_seconds" xml:space="preserve">
-    <value>Increment in seconds</value>
+    <value>Przyrost w sekundach</value>
   </data>
   <data name="minutes_per_side" xml:space="preserve">
-    <value>Minutes per side</value>
+    <value>Liczba minut na gracza</value>
   </data>
   <data name="not_provided" xml:space="preserve">
-    <value>not provided</value>
+    <value>nie podano</value>
+  </data>
+  <data name="opponent" xml:space="preserve">
+    <value>Przeciwnik</value>
   </data>
   <data name="side" xml:space="preserve">
-    <value>Side</value>
+    <value>Strona</value>
   </data>
   <data name="side.black" xml:space="preserve">
-    <value>Black</value>
+    <value>Czarna</value>
   </data>
   <data name="side.random" xml:space="preserve">
-    <value>Random</value>
+    <value>Losowa</value>
   </data>
   <data name="side.white" xml:space="preserve">
-    <value>White</value>
+    <value>Biała</value>
   </data>
   <data name="time" xml:space="preserve">
-    <value>Time</value>
+    <value>Czas</value>
   </data>
   <data name="url_form.first_person_notification" xml:space="preserve">
-    <value>The first person to come to this URL will play with you.</value>
+    <value>Pierwsza osoba, która wejdzie na ten adres URL zagra z Tobą.</value>
   </data>
   <data name="url_form.invite_notification" xml:space="preserve">
-    <value>To invite someone to play, give this URL:</value>
+    <value>Aby zaprosić kogoś do gry, podaj ten adres URL:</value>
   </data>
   <data name="varient" xml:space="preserve">
-    <value>Varient</value>
+    <value>Wariant</value>
   </data>
   <data name="waiting" xml:space="preserve">
-    <value>waiting...</value>
+    <value>oczekiwanie...</value>
+  </data>
+  <data name="you" xml:space="preserve">
+    <value>Ty</value>
   </data>
 </root>

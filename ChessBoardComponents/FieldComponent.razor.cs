@@ -1,10 +1,5 @@
-﻿using ChessClassLibrary;
-using ChessClassLibrary.enums;
-using ChessClassLibrary.Pieces;
+﻿using ChessClassLibrary.enums;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ChessBoardComponents
 {
@@ -29,11 +24,14 @@ namespace ChessBoardComponents
         Red,
     }
 
-    public class FieldComponentBase : ComponentBase
+    public partial class FieldComponent : ComponentBase
     {
         [Parameter] public BackgroudColor BackgroudColor { get; set; }
         [Parameter] public BorderColor BorderColor { get; set; }
+        [Parameter] public BackgroudColor LetterColor { get; set; }
         [Parameter] public PieceForView Piece { get; set; }
+        [Parameter] public char BottomLetter { get; set; }
+        [Parameter] public char TopLetter { get; set; }
 
         [Parameter] public EventCallback OnFieldClicked { get; set; }
 
@@ -46,6 +44,17 @@ namespace ChessBoardComponents
         protected string GetBackgroundColor()
         {
             switch (this.BackgroudColor)
+            {
+                case BackgroudColor.Light: return "papayawhip";
+                case BackgroudColor.Dark: return "saddlebrown";
+                case BackgroudColor.Red: return "red";
+                default: return "white";
+            }
+        }
+
+        protected string GetLetterColor()
+        {
+            switch (this.LetterColor)
             {
                 case BackgroudColor.Light: return "papayawhip";
                 case BackgroudColor.Dark: return "saddlebrown";

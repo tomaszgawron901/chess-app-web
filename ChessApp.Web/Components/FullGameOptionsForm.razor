@@ -1,13 +1,17 @@
-﻿<div class="input-group mb-3">
+﻿<div class="input-group mb-3 bordered @(CurrentPlayer == PieceColor.White ? "playing" : "")">
     <div class="input-group-prepend">
-        <span class="input-group-text custom-span white">@L["player1"]</span>
+        <span class="input-group-text custom-span white">
+            @(UserPlayer == PieceColor.White ? L["you"] : UserPlayer == PieceColor.Black ? L["opponent"] : L["player1"])
+        </span>
     </div>
     <input type="text" disabled class="form-control" value=@Player1 />
 </div>
 
-<div class="input-group mb-3">
+<div class="input-group mb-3 bordered @(CurrentPlayer == PieceColor.Black ? "playing" : "")">
     <div class="input-group-prepend">
-        <span class="input-group-text custom-span black">@L["player2"]</span>
+        <span class="input-group-text custom-span black">
+            @(UserPlayer == PieceColor.Black ? L["you"] : UserPlayer == PieceColor.White ? L["opponent"] : L["player1"])
+        </span>
     </div>
     <input type="text" disabled class="form-control" value=@Player2/>
 </div>

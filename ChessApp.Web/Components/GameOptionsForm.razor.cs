@@ -1,9 +1,7 @@
 ﻿using ChessApp.Web.Enums;
-using ChessApp.Web.Models;
 using ChessClassLibrary.enums;
 using ChessClassLibrary.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Localization;
 using System;
 
 namespace ChessApp.Web.Components

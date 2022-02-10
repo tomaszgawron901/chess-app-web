@@ -1,13 +1,10 @@
 ﻿using ChessClassLibrary.enums;
-using ChessClassLibrary.Pieces;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace ChessBoardComponents
 {
-    public class PieceComponentBase : ComponentBase
+    public partial class PieceComponent : ComponentBase
     {
         [Parameter] public PieceColor PieceColor { get; set; }
         [Parameter] public PieceType PieceType { get; set; }

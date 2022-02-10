@@ -1,7 +1,11 @@
-﻿@inherits FieldComponentBase
-
+﻿
 <div class="Field" @onclick="OnFieldClick" style="background-color: @GetBackgroundColor(); border-color: @GetBorderColor()">
-
+    <div class="letter top-right" style="color: @GetLetterColor()">
+        @TopLetter
+    </div>
+    <div class="letter bottom-left" style="color: @GetLetterColor()">
+        @BottomLetter
+    </div>
     @if (Piece != null)
     {
         <PieceComponent PieceColor="Piece.PieceColor" PieceType="Piece.PieceType"></PieceComponent>

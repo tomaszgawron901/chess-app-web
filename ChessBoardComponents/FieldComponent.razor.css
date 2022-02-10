@@ -7,3 +7,19 @@
     display: flex;
     position: relative;
 }
+
+.letter {
+    position: absolute;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.letter.top-right {
+    top: 0px;
+    right: 0px;
+}
+
+.letter.bottom-left {
+    bottom: 0px;
+    left:  0px;
+}
