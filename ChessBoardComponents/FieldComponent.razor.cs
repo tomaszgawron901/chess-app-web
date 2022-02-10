@@ -1,10 +1,5 @@
-﻿using ChessClassLibrary;
-using ChessClassLibrary.enums;
-using ChessClassLibrary.Pieces;
+﻿using ChessClassLibrary.enums;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ChessBoardComponents
 {

@@ -1,17 +1,11 @@
 ﻿using ChessApp.Web.Components;
 using ChessApp.Web.helpers;
 using ChessApp.Web.Models;
-using ChessApp.Web.Services;
 using ChessBoardComponents;
-using ChessClassLibrary;
 using ChessClassLibrary.enums;
-using ChessClassLibrary.Games.ClassicGame;
 using ChessClassLibrary.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,6 +30,7 @@ namespace ChessApp.Web.Pages
 
         protected bool IsBoardRotated => this.GameManager.ClientColor == PieceColor.Black;
         protected PieceColor? CurrentPlayer => this.GameManager != null && this.GameManager.IsGameReadyToPlay ? this.GameManager.CurrentPlayerColor : null;
+        protected PieceColor? UserPlayer => this.GameManager != null  ? this.GameManager.ClientColor : null;
 
         protected override async Task OnInitializedAsync()
         {
@@ -50,7 +45,6 @@ namespace ChessApp.Web.Pages
             {
                 AppNavigationManager.NavigateTo($"/");
             }
-            
         }
 
         protected void AfterBoardReady(ChessBoardComponent board)

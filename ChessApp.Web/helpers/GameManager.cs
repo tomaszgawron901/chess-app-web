@@ -2,7 +2,6 @@
 using ChessApp.Web.Pages;
 using ChessApp.Web.Services;
 using ChessBoardComponents;
-using ChessClassLibrary.Boards;
 using ChessClassLibrary.enums;
 using ChessClassLibrary.Games;
 using ChessClassLibrary.Games.ClassicGame;
