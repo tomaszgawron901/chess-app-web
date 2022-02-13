@@ -20,8 +20,10 @@ namespace ChessApp.Web.Components
                 {
                     case null:
                         return @L["not_provided"];
-                    case ChessClassLibrary.enums.GameVarient:
+                    case ChessClassLibrary.enums.GameVarient.Standard:
                         return @L["game_varient.standard"];
+                    case ChessClassLibrary.enums.GameVarient.Knightmate:
+                        return @L["game_varient.knightmate"];
                     default:
                         return @L["unknown_type"];
                 }
