@@ -61,6 +61,24 @@ namespace ChessApp.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Black.
+        /// </summary>
+        public static string black {
+            get {
+                return ResourceManager.GetString("black", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to black won.
+        /// </summary>
+        public static string black_won {
+            get {
+                return ResourceManager.GetString("black_won", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string button_cancel {
@@ -93,6 +111,15 @@ namespace ChessApp.Web.Resources {
         public static string create_new_game {
             get {
                 return ResourceManager.GetString("create_new_game", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game ended.
+        /// </summary>
+        public static string game_ended {
+            get {
+                return ResourceManager.GetString("game_ended", resourceCulture);
             }
         }
         
@@ -169,6 +196,24 @@ namespace ChessApp.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Player joined.
+        /// </summary>
+        public static string player_joined {
+            get {
+                return ResourceManager.GetString("player_joined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player left.
+        /// </summary>
+        public static string player_left {
+            get {
+                return ResourceManager.GetString("player_left", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Side.
         /// </summary>
         public static string side {
@@ -205,11 +250,38 @@ namespace ChessApp.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to stalemate.
+        /// </summary>
+        public static string stalemate {
+            get {
+                return ResourceManager.GetString("stalemate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have successfully connected to the game..
+        /// </summary>
+        public static string successfuly_connected_message {
+            get {
+                return ResourceManager.GetString("successfuly_connected_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time.
         /// </summary>
         public static string time {
             get {
                 return ResourceManager.GetString("time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to to.
+        /// </summary>
+        public static string to {
+            get {
+                return ResourceManager.GetString("to", resourceCulture);
             }
         }
         
@@ -246,6 +318,24 @@ namespace ChessApp.Web.Resources {
         public static string waiting {
             get {
                 return ResourceManager.GetString("waiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to White.
+        /// </summary>
+        public static string white {
+            get {
+                return ResourceManager.GetString("white", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to white won.
+        /// </summary>
+        public static string white_won {
+            get {
+                return ResourceManager.GetString("white_won", resourceCulture);
             }
         }
         
