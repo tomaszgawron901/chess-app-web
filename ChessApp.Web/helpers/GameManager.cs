@@ -7,17 +7,21 @@ using ChessClassLibrary.Games;
 using ChessClassLibrary.Games.ClassicGame;
 using ChessClassLibrary.Models;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ChessApp.Web.helpers
 {
-    public class GameManager: IAsyncDisposable
+    public class GameManager : IAsyncDisposable
     {
         private HubConnection hubConnection;
         private GameService gameService;
+
+        private IStringLocalizer<App> Localizer { get; }
 
         private string gameCode;
         private GameOptions gameOptions;
@@ -27,9 +31,10 @@ namespace ChessApp.Web.helpers
         public bool IsGameCreated { get; private set; }
         public bool IsGameReadyToPlay { get; private set; }
 
-        public GameManager(GameService gameService)
+        public GameManager(GameService gameService, IStringLocalizer<App> localizer)
         {
             this.gameService = gameService;
+            this.Localizer = localizer;
         }
 
 
@@ -50,22 +55,23 @@ namespace ChessApp.Web.helpers
                 }
             });
 
-            this.hubConnection.On<string, BoardMove, SharedClock, SharedClock> ("PerformMove", (gameKey, boardMove, clock1, clock2) => {
+            this.hubConnection.On<string, BoardMove, SharedClock, SharedClock>("PerformMove", (gameKey, boardMove, clock1, clock2) => {
                 if (gameKey == this.gameCode)
                 {
-                    string message = "";
-                    if(this.CurrentPlayerColor == PieceColor.White)
+                    StringBuilder st = new StringBuilder();
+                    if (this.CurrentPlayerColor == PieceColor.White)
                     {
-                        message += "White ";
+                        st.Append($"{Localizer["white"]} ");
                     }
                     else if (this.CurrentPlayerColor == PieceColor.Black)
                     {
-                        message += "Black ";
+                        st.Append($"{Localizer["black"]} ");
                     }
+                    st.Append($"{boardMove.Current} {Localizer["to"]} {boardMove.Destination}");
                     this.game.TryPerformMove(boardMove);
                     gameRoom.UnSelectBoard();
                     this.gameRoom.SetBoardPieces(GetPiecesForView());
-                    this.gameRoom.ChatWindow.AddMessage($"{message}{boardMove}");
+                    this.gameRoom.ChatWindow.AddMessage(st.ToString());
                     if (ClientColor == PieceColor.Black)
                     {
                         this.gameRoom.SetTimer1(clock1);
@@ -84,29 +90,31 @@ namespace ChessApp.Web.helpers
                 {
                     if (winner == null)
                     {
-                        this.gameRoom.ChatWindow.AddMessage("Game ended: Stalemate");
+                        this.gameRoom.ChatWindow.AddMessage($"{Localizer["game_ended"]}: {Localizer["stalemate"]}");
                     }
-                    else if(winner == PieceColor.White)
+                    else if (winner == PieceColor.White)
                     {
-                        this.gameRoom.ChatWindow.AddMessage("Game ended: White won");
+                        this.gameRoom.ChatWindow.AddMessage($"{Localizer["game_ended"]}: {Localizer["white_won"]}");
                     }
                     else if (winner == PieceColor.Black)
                     {
-                        this.gameRoom.ChatWindow.AddMessage("Game ended: Black won");
+                        this.gameRoom.ChatWindow.AddMessage($"{Localizer["game_ended"]}: {Localizer["black_won"]}");
                     }
 
                 }
             });
 
-            this.hubConnection.On<string, string>("ServerMessage", (gameKey, message) => {
+            this.hubConnection.On<string, string>("PlayerLeft", (gameKey, user) => {
                 if (gameKey == this.gameCode)
                 {
+                    this.gameRoom.ChatWindow.AddMessage(Localizer["player_left"]);
                 }
             });
 
-            this.hubConnection.On<string, string>("UserMessage", (gameKey, message) => {
+            this.hubConnection.On<string, string>("PlayerJoined", (gameKey, user) => {
                 if (gameKey == this.gameCode)
                 {
+                    this.gameRoom.ChatWindow.AddMessage(Localizer["player_joined"]);
                 }
             });
         }
@@ -150,7 +158,7 @@ namespace ChessApp.Web.helpers
             await this.JoinGame(gameCode);
             this.SetListeners();
             this.CreateGame();
-            this.gameRoom.ChatWindow.AddMessage("You have successfully connected to the game.");
+            this.gameRoom.ChatWindow.AddMessage(Localizer["successfuly_connected_message"]);
         }
 
 
@@ -215,13 +223,13 @@ namespace ChessApp.Web.helpers
         {
             try
             {
-                return  game != null && ClientColor == CurrentPlayerColor  && game.CanPerformMove(move);
+                return game != null && ClientColor == CurrentPlayerColor && game.CanPerformMove(move);
             }
             catch
             {
                 return false;
             }
-            
+
         }
 
         public IEnumerable<PieceMove> GetPieceMoveSetAtPosition(Position position)

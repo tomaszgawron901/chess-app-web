@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="black" xml:space="preserve">
+    <value>Czarny</value>
+  </data>
+  <data name="black_won" xml:space="preserve">
+    <value>Wygrał czarny</value>
+  </data>
   <data name="button.cancel" xml:space="preserve">
     <value>Anuluj</value>
   </data>
@@ -128,6 +134,9 @@
   </data>
   <data name="create_new_game" xml:space="preserve">
     <value>Utwórz nową grę</value>
+  </data>
+  <data name="game_ended" xml:space="preserve">
+    <value>Koniec gry</value>
   </data>
   <data name="game_varient" xml:space="preserve">
     <value>Wariant gry</value>
@@ -153,6 +162,12 @@
   <data name="opponent" xml:space="preserve">
     <value>Przeciwnik</value>
   </data>
+  <data name="player_joined" xml:space="preserve">
+    <value>Gracz dołączył do gry</value>
+  </data>
+  <data name="player_left" xml:space="preserve">
+    <value>Gracz opuścił grę</value>
+  </data>
   <data name="side" xml:space="preserve">
     <value>Strona</value>
   </data>
@@ -165,8 +180,17 @@
   <data name="side.white" xml:space="preserve">
     <value>Biała</value>
   </data>
+  <data name="stalemate" xml:space="preserve">
+    <value>pat</value>
+  </data>
+  <data name="successfuly_connected_message" xml:space="preserve">
+    <value>Udało ci się pomyślnie dołączyć do gry.</value>
+  </data>
   <data name="time" xml:space="preserve">
     <value>Czas</value>
+  </data>
+  <data name="to" xml:space="preserve">
+    <value>na</value>
   </data>
   <data name="url_form.first_person_notification" xml:space="preserve">
     <value>Pierwsza osoba, która wejdzie na ten adres URL zagra z Tobą.</value>
@@ -179,6 +203,12 @@
   </data>
   <data name="waiting" xml:space="preserve">
     <value>oczekiwanie...</value>
+  </data>
+  <data name="white" xml:space="preserve">
+    <value>Biały</value>
+  </data>
+  <data name="white_won" xml:space="preserve">
+    <value>Wygrał biały</value>
   </data>
   <data name="you" xml:space="preserve">
     <value>Ty</value>
