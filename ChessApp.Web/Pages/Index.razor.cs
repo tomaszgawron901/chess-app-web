@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using ChessApp.Web.Services;
-using ChessClassLibrary.Models;
+using ChessClassLib.Models;
 
 namespace ChessApp.Web.Pages
 {
