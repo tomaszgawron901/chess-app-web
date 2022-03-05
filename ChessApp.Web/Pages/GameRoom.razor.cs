@@ -2,8 +2,8 @@
 using ChessApp.Web.helpers;
 using ChessApp.Web.Models;
 using ChessBoardComponents;
-using ChessClassLibrary.enums;
-using ChessClassLibrary.Models;
+using ChessClassLib.Enums;
+using ChessClassLib.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using System.Linq;

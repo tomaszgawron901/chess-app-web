@@ -1,4 +1,6 @@
-﻿<div class="input-group mb-3 bordered @(CurrentPlayer == PieceColor.White ? "playing" : "")">
+﻿@using ChessClassLib.Enums;
+
+<div class="input-group mb-3 bordered @(CurrentPlayer == PieceColor.White ? "playing" : "")">
     <div class="input-group-prepend">
         <span class="input-group-text custom-span white">
             @(UserPlayer == PieceColor.White ? L["you"] : UserPlayer == PieceColor.Black ? L["opponent"] : L["player1"])

@@ -2,10 +2,10 @@
 using ChessApp.Web.Pages;
 using ChessApp.Web.Services;
 using ChessBoardComponents;
-using ChessClassLibrary.enums;
-using ChessClassLibrary.Games;
-using ChessClassLibrary.Games.ClassicGame;
-using ChessClassLibrary.Models;
+using ChessClassLib.Enums;
+using ChessClassLib.Logic.Games;
+using ChessClassLib.Models;
+using hessClassLibrary.Logic.Games;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Localization;
 using System;

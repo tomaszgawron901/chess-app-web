@@ -1,4 +1,4 @@
-﻿using ChessClassLibrary.Models;
+﻿using ChessClassLib.Models;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;

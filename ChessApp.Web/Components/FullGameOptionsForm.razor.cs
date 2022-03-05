@@ -1,5 +1,5 @@
-﻿using ChessClassLibrary.enums;
-using ChessClassLibrary.Models;
+﻿using ChessClassLib.Enums;
+using ChessClassLib.Models;
 using Microsoft.AspNetCore.Components;
 
 
@@ -20,9 +20,9 @@ namespace ChessApp.Web.Components
                 {
                     case null:
                         return @L["not_provided"];
-                    case ChessClassLibrary.enums.GameVarient.Standard:
+                    case ChessClassLib.Enums.GameVarient.Standard:
                         return @L["game_varient.standard"];
-                    case ChessClassLibrary.enums.GameVarient.Knightmate:
+                    case ChessClassLib.Enums.GameVarient.Knightmate:
                         return @L["game_varient.knightmate"];
                     default:
                         return @L["unknown_type"];

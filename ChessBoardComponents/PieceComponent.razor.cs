@@ -1,4 +1,4 @@
-﻿using ChessClassLibrary.enums;
+﻿using ChessClassLib.Enums;
 using Microsoft.AspNetCore.Components;
 using System.Text;
 

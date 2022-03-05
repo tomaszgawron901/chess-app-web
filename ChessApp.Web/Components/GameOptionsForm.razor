@@ -1,4 +1,6 @@
-﻿<EditForm Model="@GameOptions" OnValidSubmit="@HandleValidSubmit" class=" mb-3">
+﻿@using ChessClassLib.Enums
+
+<EditForm Model="@GameOptions" OnValidSubmit="@HandleValidSubmit" class=" mb-3">
     <DataAnnotationsValidator />
     <div class="input-group mb-3">
         <div class="input-group-prepend">
