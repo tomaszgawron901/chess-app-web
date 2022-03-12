@@ -261,9 +261,9 @@ namespace ChessApp.Web.Resources {
         /// <summary>
         ///   Looks up a localized string similar to You have successfully connected to the game..
         /// </summary>
-        public static string successfuly_connected_message {
+        public static string successfully_connected_message {
             get {
-                return ResourceManager.GetString("successfuly_connected_message", resourceCulture);
+                return ResourceManager.GetString("successfully_connected_message", resourceCulture);
             }
         }
         

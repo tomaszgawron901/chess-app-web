@@ -38,6 +38,13 @@ namespace ChessBoardComponents
         public void SetBorderColor(BorderColor color)
         {
             this.BorderColor = color;
+            this.StateHasChanged();
+        }
+
+        public void SetBackgroundColor(BackgroudColor color)
+        {
+            this.BackgroudColor = color;
+            this.StateHasChanged();
         }
 
 

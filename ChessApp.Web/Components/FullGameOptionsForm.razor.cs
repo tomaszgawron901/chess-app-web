@@ -7,14 +7,32 @@ namespace ChessApp.Web.Components
 {
     public partial class FullGameOptionsForm: ComponentBase
     {
-        [Parameter] public GameOptions GameOptions { get; set; }
-        [Parameter] public PieceColor? CurrentPlayer { get; set; } = null;
-        [Parameter] public PieceColor? UserPlayer { get; set; } = null;
+        private PieceColor? UserPlayer { get; set; } = null;
+        private GameOptions GameOptions { get; set; }
+        private PieceColor? CurrentPlayer { get; set; } = null;
 
-        public string Player1 => GameOptions?.Player1 ?? L["waiting"];
-        public string Player2 => GameOptions?.Player2 ?? L["waiting"];
+        public void SetGameOptions(GameOptions gameOptions)
+        {
+            GameOptions = gameOptions;
+            StateHasChanged();
+        }
 
-        public string GameVarient {
+        public void SetCurrentPlayer(PieceColor? color)
+        {
+            CurrentPlayer = color;
+            StateHasChanged();
+        }
+
+        public void SetUserPlayer(PieceColor? color)
+        {
+            UserPlayer = color;
+            StateHasChanged();
+        }
+
+        private string Player1 => GameOptions?.Player1 ?? L["waiting"];
+        private string Player2 => GameOptions?.Player2 ?? L["waiting"];
+
+        private string GameVarient {
             get {
                 switch (GameOptions?.GameVarient)
                 {
@@ -30,7 +48,7 @@ namespace ChessApp.Web.Components
             }
         }
 
-        public string MinutesPerSide => GameOptions?.MinutesPerSide.ToString()+" min" ?? @L["not_provided"];
-        public string IncrementInSeconds => GameOptions?.IncrementInSeconds.ToString()+" sec" ?? @L["not_provided"];
+        private string MinutesPerSide => GameOptions?.MinutesPerSide.ToString()+" min" ?? @L["not_provided"];
+        private string IncrementInSeconds => GameOptions?.IncrementInSeconds.ToString()+" sec" ?? @L["not_provided"];
     }
 }

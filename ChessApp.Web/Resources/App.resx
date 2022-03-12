@@ -183,7 +183,7 @@
   <data name="stalemate" xml:space="preserve">
     <value>stalemate</value>
   </data>
-  <data name="successfuly_connected_message" xml:space="preserve">
+  <data name="successfully_connected_message" xml:space="preserve">
     <value>You have successfully connected to the game.</value>
   </data>
   <data name="time" xml:space="preserve">
