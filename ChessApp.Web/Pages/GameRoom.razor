@@ -8,8 +8,13 @@
             <div class="card-body">
                 <FullGameOptionsForm @ref="FullGameOptionsForm"/>
                 <CopyUrlField Url="@JoinUrl" />
+
             </div>
         </div>
+        <button id="leave-room-button" type="button" class="btn btn-primary" @onclick="HandleNewGameClicked">
+            <span class="oi oi-account-logout"></span>
+                @L["leave_game_room"]
+        </button>
     </div>
 
     <div class="main">

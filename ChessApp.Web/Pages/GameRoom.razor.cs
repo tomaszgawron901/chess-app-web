@@ -22,6 +22,7 @@ namespace ChessApp.Web.Pages
 
         [Parameter] public string RoomCode { get; set; }
         [Parameter] public EventCallback<Position> OnBoardFieldClicked { get; set; }
+        [Parameter] public EventCallback OnLeaveGameRoomClicked { get; set; }
 
         private ChessBoardComponent ChessBoardComponent;
         private FullGameOptionsForm FullGameOptionsForm;
@@ -147,9 +148,14 @@ namespace ChessApp.Web.Pages
 
         public Position? GetSelectedPosition() => ChessBoardComponent.selectedPosition;
 
-        protected async Task HandleBoardFieldClicked(Position position)
+        private async Task HandleBoardFieldClicked(Position position)
         {
             await OnBoardFieldClicked.InvokeAsync(position);
+        }
+
+        private async Task HandleNewGameClicked()
+        {
+            await OnLeaveGameRoomClicked.InvokeAsync();
         }
 
         public void Dispose()

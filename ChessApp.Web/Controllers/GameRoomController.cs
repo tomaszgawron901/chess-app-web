@@ -37,6 +37,7 @@ namespace ChessApp.Web.Controllers
             {
                 GameRoom = gameRoom;
                 GameRoom.OnBoardFieldClicked = EventCallback.Factory.Create(this, delegate (Position p) { HandleBoardFieldClicked(p); });
+                GameRoom.OnLeaveGameRoomClicked = EventCallback.Factory.Create(this, async delegate() { await HandleLeaveGame(); });
                 GameRoomService = GameHubService.CreateGameRoomService(roomKey);
                 SetListeners();
                 var gameOptions = await GameRoomService.JoinGame();
@@ -53,6 +54,12 @@ namespace ChessApp.Web.Controllers
             {
                 AppNavigationManager.NavigateToMainPage();
             }
+        }
+
+        private Task HandleLeaveGame()
+        {
+            return GameRoomService.LeaveGame()
+                .ContinueWith(_ => { AppNavigationManager.NavigateToMainPage(); });
         }
 
         private void HandleOptionsChange(GameOptions gameOptions)
@@ -151,19 +158,19 @@ namespace ChessApp.Web.Controllers
             }
         }
 
-        public void HandleGameEnded(PieceColor? winner)
+        private void HandleGameEnded(PieceColor? winner)
         {
             GameRoom.NotifyGameEnded(winner);
             GameRoom.ClearBoardSelections();
             GameRoom.DisableBoard();
         }
 
-        public void HandlePlayerLeft(string player)
+        private void HandlePlayerLeft(string player)
         {
             GameRoom.NotifyPlayerLeft();
         }
 
-        public void HandlePlayerJoined(string player)
+        private void HandlePlayerJoined(string player)
         {
             GameRoom.NotifyPlayerJoined();
         }
@@ -200,11 +207,11 @@ namespace ChessApp.Web.Controllers
             GameRoom.SetBoardPieces(piecesForView);
         }
 
-        public IEnumerable<PieceMove> GetPieceMoveSetAtPosition(Position position)
+        private IEnumerable<PieceMove> GetPieceMoveSetAtPosition(Position position)
             => game?.GetPieceMoveSetAtPosition(position) ?? Enumerable.Empty<PieceMove>();
 
 
-        public PieceForView GetPieceForViewAtPosition(Position position)
+        private PieceForView GetPieceForViewAtPosition(Position position)
         {
             try
             {

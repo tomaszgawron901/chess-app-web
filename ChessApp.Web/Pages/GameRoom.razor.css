@@ -36,3 +36,7 @@
 .right-sidebar .card-body{
     overflow-y: auto;
 }
+
+#leave-room-button {
+    margin-top: 5px;
+}
