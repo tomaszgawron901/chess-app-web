@@ -1,11 +1,12 @@
 ﻿using ChessApp.Web.Models;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ChessApp.Web.Components
 {
-    public partial class TimerComponent: ComponentBase
+    public partial class TimerComponent: ComponentBase, IDisposable
     {
         private CancellationTokenSource cts;
         public string timeString { get; private set; }
@@ -16,69 +17,75 @@ namespace ChessApp.Web.Components
 
         public TimerComponent()
         {
-            this.frequency = 1000;
-            this.timeString = "00:00";
-            this.isGoing = false;
+            frequency = 1000;
+            timeString = "00:00";
+            isGoing = false;
         }
 
         private void SetTimeString(string timeString)
         {
             this.timeString = timeString;
-            this.StateHasChanged();
+            StateHasChanged();
         }
 
         private void StartClock()
         {
-            this.cts = new CancellationTokenSource();
-            var token = this.cts.Token;
+            cts = new CancellationTokenSource();
+            var token = cts.Token;
             Task.Run(async () => {
                 int rest = time % frequency;
                 await Task.Delay(rest, token);
                 if (token.IsCancellationRequested) { return; }
 
-                this.SetTime(time - rest);
+                SetTime(time - rest);
                 while (time > 0)
                 {
                     await Task.Delay(frequency, token);
                     if (token.IsCancellationRequested) { return; }
-                    this.SetTime(time - frequency);
+                    SetTime(time - frequency);
                 }
-                this.SetTime(0);
+                SetTime(0);
             }, token);
-            this.isGoing = true;
+            isGoing = true;
         }
 
         private void StopClock()
         {
             if(isGoing)
             {
-                this.cts.Cancel();
-                this.isGoing = false;
+                cts.Cancel();
+                cts.Dispose();
+                isGoing = false;
             }
         }
 
         private void SetTime(int time)
         {
             this.time = time;
-            this.SetTimeString(this.TimeToString(this.time));
+            SetTimeString(TimeToString(this.time));
         }
 
-        private string TimeToString(int time)
-        {
-            int secs = time / 1000;
-            int mins = secs / 60;
-            return $"{mins % 100 / 10}{mins % 10}:{secs%60/10}{secs%10}";
-        }
 
         public void SetClock(SharedClock clock)
         {
-            this.StopClock();
-            this.SetTime((int)clock.Time);
+            StopClock();
+            SetTime((int)clock.Time);
             if (clock.Started)
             {
-                this.StartClock();
+                StartClock();
             }
         }
 
+        private static string TimeToString(int time)
+        {
+            int secs = time / 1000;
+            int mins = secs / 60;
+            return $"{mins % 100 / 10}{mins % 10}:{secs % 60 / 10}{secs % 10}";
+        }
+
+        public void Dispose()
+        {
+            cts?.Dispose();
+        }
     }
 }

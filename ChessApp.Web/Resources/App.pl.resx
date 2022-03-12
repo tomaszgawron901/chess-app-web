@@ -153,6 +153,9 @@
   <data name="increment_in_seconds" xml:space="preserve">
     <value>Przyrost w sekundach</value>
   </data>
+  <data name="leave_game_room" xml:space="preserve">
+    <value>Opuść pokój</value>
+  </data>
   <data name="minutes_per_side" xml:space="preserve">
     <value>Liczba minut na gracza</value>
   </data>
@@ -183,7 +186,7 @@
   <data name="stalemate" xml:space="preserve">
     <value>pat</value>
   </data>
-  <data name="successfuly_connected_message" xml:space="preserve">
+  <data name="successfully_connected_message" xml:space="preserve">
     <value>Udało ci się pomyślnie dołączyć do gry.</value>
   </data>
   <data name="time" xml:space="preserve">

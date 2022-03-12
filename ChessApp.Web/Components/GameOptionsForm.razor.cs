@@ -17,25 +17,25 @@ namespace ChessApp.Web.Components
 
         protected void HandleValidSubmit()
         {
-            if (this.Side == Side.White)
+            if (Side == Side.White)
             {
-                this.GameOptions.Side = PieceColor.White;
+                GameOptions.Side = PieceColor.White;
             }
-            else if(this.Side == Side.Black)
+            else if(Side == Side.Black)
             {
-                this.GameOptions.Side = PieceColor.Black;
+                GameOptions.Side = PieceColor.Black;
             }
             else
             {
                 if(new Random().Next(2) == 0)
                 {
-                    this.GameOptions.Side = PieceColor.White;
+                    GameOptions.Side = PieceColor.White;
                 } else
                 {
-                    this.GameOptions.Side = PieceColor.Black;
+                    GameOptions.Side = PieceColor.Black;
                 }
             }
-            this.OnValidSubmit.InvokeAsync(this.GameOptions);
+            OnValidSubmit.InvokeAsync(GameOptions);
         }
     }
 }

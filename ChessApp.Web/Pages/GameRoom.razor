@@ -1,4 +1,4 @@
-﻿@page "/game-room/{GameCode}"
+﻿@page "/game-room/{RoomCode}"
 @using ChessBoardComponents
 
 
@@ -6,25 +6,27 @@
     <div class="left-sidebar">
         <div class="card">
             <div class="card-body">
-                <FullGameOptionsForm @ref="FullGameOptionsForm" GameOptions="@GameOptions" CurrentPlayer="@CurrentPlayer" UserPlayer="@UserPlayer"></FullGameOptionsForm>
-                <CopyUrlField Url="@JoinUrl"></CopyUrlField>
+                <FullGameOptionsForm @ref="FullGameOptionsForm"/>
+                <CopyUrlField Url="@JoinUrl" />
+
             </div>
         </div>
+        <button id="leave-room-button" type="button" class="btn btn-primary" @onclick="HandleNewGameClicked">
+            <span class="oi oi-account-logout"></span>
+                @L["leave_game_room"]
+        </button>
     </div>
 
     <div class="main">
-        <TimerComponent @ref="timer1"></TimerComponent>
-        @if (GameManager.IsGameCreated)
-        {
-            <ChessBoardComponent IsRotated="IsBoardRotated" Pieces="pieces" OnFieldClicked="OnBoardFieldClicked" IsReady="AfterBoardReady" />
-        }
-        <TimerComponent @ref="timer2"></TimerComponent>
+        <TimerComponent @ref="timer1" />
+        <ChessBoardComponent @ref="ChessBoardComponent" OnFieldClicked="OnBoardFieldClicked" />
+        <TimerComponent @ref="timer2" />
     </div>
 
     <div class="right-sidebar">
         <div class="card" style="height: 100%">
             <div class="card-body">
-                <ChatWindow @ref="ChatWindow"></ChatWindow>
+                <ActivityLog @ref="ActivityLog" />
             </div>
         </div>
     </div>

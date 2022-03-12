@@ -6,9 +6,8 @@ using Microsoft.Extensions.Localization;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using ChessBoardComponents.Interops;
 using ChessApp.Web.Services;
-using ChessApp.Web.helpers;
+using ChessApp.Web.Controllers;
 
 namespace ChessApp.Web
 {
@@ -25,10 +24,10 @@ namespace ChessApp.Web
                 client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("chess_server_root"));
             });
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-            builder.Services.AddScoped<GameService>();
-            builder.Services.AddScoped<ChessBoardInterops>();
+            builder.Services.AddScoped<GameHubService>();
+            builder.Services.AddScoped<JSInteropService>();
 
-            builder.Services.AddTransient<GameManager>();
+            builder.Services.AddTransient<GameRoomController>();
             await builder.Build().RunAsync();
         }
     }

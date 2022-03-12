@@ -1,118 +1,168 @@
 ﻿using ChessApp.Web.Components;
-using ChessApp.Web.helpers;
+using ChessApp.Web.Controllers;
+using ChessApp.Web.Exstentions;
 using ChessApp.Web.Models;
 using ChessBoardComponents;
 using ChessClassLib.Enums;
 using ChessClassLib.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Configuration;
-using System.Linq;
+using Microsoft.Extensions.Localization;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ChessApp.Web.Pages
 {
-    public partial class GameRoom: ComponentBase
+    public partial class GameRoom: ComponentBase, IDisposable
     {
-        [Inject] protected NavigationManager AppNavigationManager { get; set; }
-        [Inject] IConfiguration Configuration { get; set; }
-        [Inject] protected GameManager GameManager { get; set; }
+        [Inject] private NavigationManager AppNavigationManager { get; set; }
+        [Inject] private IStringLocalizer<App> Localizer { get; set; }
+        [Inject] private GameRoomController GameRoomController { get; set; }
 
-        protected ChessBoardComponent ChessBoardComponent;
-        protected FullGameOptionsForm FullGameOptionsForm;
-        public ChatWindow ChatWindow;
+        [Parameter] public string RoomCode { get; set; }
+        [Parameter] public EventCallback<Position> OnBoardFieldClicked { get; set; }
+        [Parameter] public EventCallback OnLeaveGameRoomClicked { get; set; }
 
-        [Parameter] public string GameCode { get; set; }
-        protected string JoinUrl;
-        protected GameOptions GameOptions;
-        protected PieceForView[,] pieces;
-        protected TimerComponent timer1;
-        protected TimerComponent timer2;
+        private ChessBoardComponent ChessBoardComponent;
+        private FullGameOptionsForm FullGameOptionsForm;
+        private ActivityLog ActivityLog;
+        private TimerComponent timer1;
+        private TimerComponent timer2;
 
-        protected bool IsBoardRotated => this.GameManager.ClientColor == PieceColor.Black;
-        protected PieceColor? CurrentPlayer => this.GameManager != null && this.GameManager.IsGameReadyToPlay ? this.GameManager.CurrentPlayerColor : null;
-        protected PieceColor? UserPlayer => this.GameManager != null  ? this.GameManager.ClientColor : null;
+        private string JoinUrl;
 
-        protected override async Task OnInitializedAsync()
+        protected override Task OnInitializedAsync()
         {
-            await base.OnInitializedAsync();
-            this.JoinUrl = AppNavigationManager.Uri;
+            JoinUrl = AppNavigationManager.Uri;
+            return base.OnInitializedAsync()
+                .Then(() => GameRoomController.Initialize(RoomCode, this));
+        }
 
-            try
+        public void SetGameOptions(GameOptions options)
+        {
+            FullGameOptionsForm.SetGameOptions(options);
+        }
+
+        public void SetClientColor(PieceColor? color)
+        {
+            FullGameOptionsForm.SetUserPlayer(color);
+            if(color == PieceColor.Black)
             {
-                await this.GameManager.PrepareGameRoom(this.GameCode, this);
+                ChessBoardComponent.SetBoardRotation(true);
             }
-            catch
+            else
             {
-                AppNavigationManager.NavigateTo($"/");
+                ChessBoardComponent.SetBoardRotation(false);
             }
         }
 
-        protected void AfterBoardReady(ChessBoardComponent board)
+        public void SetCurrentColor(PieceColor? color)
         {
-            this.ChessBoardComponent = board;
+            FullGameOptionsForm.SetCurrentPlayer(color);
         }
 
-        public void SetTimer1(SharedClock clock)
-        {
-            this.timer1.SetClock(clock);
-        }
+        public void SetTimer1(SharedClock clock) => timer1.SetClock(clock);
+        public void SetTimer2(SharedClock clock) => timer2.SetClock(clock);
 
-        public void SetTimer2(SharedClock clock)
+        public void NotifyPieceMoved(PieceColor color, BoardMove move)
         {
-            this.timer2.SetClock(clock);
-        }
-
-
-        protected async Task OnBoardFieldClicked(Position position)
-        {
-            if (this.GameManager.IsGameReadyToPlay)
+            StringBuilder sb = new StringBuilder();
+            if (color == PieceColor.White)
             {
-                if (ChessBoardComponent.selectedPosition == null)
-                {
-                    var pieceAtPosition = GameManager.GetPieceForViewAtPosition(position);
-                    if (pieceAtPosition != null)
-                    {
-                        if (pieceAtPosition.PieceColor == GameManager.ClientColor)
-                        {
-                            ChessBoardComponent.SelectPosition(position);
-                            ChessBoardComponent.ShowMoves(GameManager.GetPieceMoveSetAtPosition(position).Select(x => position + x.Shift));
-                        }
-                    }
-                }
-                else
-                {
-                    var move = new BoardMove((Position)ChessBoardComponent.selectedPosition, position);
-                    await GameManager.TryPerformMove(move);
-                    ChessBoardComponent.UnSelectAll();
-                }
+                sb.Append($"{Localizer["white"]} ");
             }
+            else if (color == PieceColor.Black)
+            {
+                sb.Append($"{Localizer["black"]} ");
+            }
+            sb.Append($"{move.Current} {Localizer["to"]} {move.Destination}");
+            ActivityLog.AddMessage(sb.ToString());
+        }
 
+        public void NotifyPlayerJoined() => ActivityLog.AddMessage(Localizer["player_joined"]);
+
+        public void NotifyPlayerLeft() => ActivityLog.AddMessage(Localizer["player_left"]);
+
+        public void NotifyGameEnded(PieceColor? winner)
+        {
+            if (winner == null)
+            {
+                ActivityLog.AddMessage($"{Localizer["game_ended"]}: {Localizer["stalemate"]}");
+            }
+            else if (winner == PieceColor.White)
+            {
+                ActivityLog.AddMessage($"{Localizer["game_ended"]}: {Localizer["white_won"]}");
+            }
+            else if (winner == PieceColor.Black)
+            {
+                ActivityLog.AddMessage($"{Localizer["game_ended"]}: {Localizer["black_won"]}");
+            }
+        }
+
+        public void NotifySuccessfullyConnected()
+        {
+            ActivityLog.AddMessage($"{Localizer["successfully_connected_message"]}");
+        }
+
+        public void NotifyErrorWhilePerformingMove(BoardMove move)
+        {
+            ActivityLog.AddMessage($"{Localizer["error_while_performing_move"]}: {move.Current} {Localizer["to"]} {move.Destination}");
+        }
+
+        public void SetBoardRotation(bool rotated)
+        {
+            ChessBoardComponent.SetBoardRotation(rotated);
+        }
+
+        public void SetDefaultBoard()
+        {
+            SetBoardPieces(new PieceForView[8, 8]);
         }
 
         public void SetBoardPieces(PieceForView[,] pieces)
         {
-            this.pieces = pieces;
-            this.StateHasChanged();
+            ChessBoardComponent.SetPieces(pieces);
         }
 
-        public void UnSelectBoard()
+        public void SetPieceMoveSet(Position position, IEnumerable<Position> moveSet)
         {
-            if (ChessBoardComponent != null)
-            {
-                ChessBoardComponent.UnSelectAll();
-            }
+            ChessBoardComponent.SelectPosition(position);
+            ChessBoardComponent.ShowMoves(moveSet);
         }
 
-        public void SetGameOptions(GameOptions gameOptions)
+        public void ClearBoardSelections()
         {
-            this.GameOptions = gameOptions;
-            this.StateHasChanged();
+            ChessBoardComponent.UnSelectAll();
         }
 
-        public void Update()
+        public void DisableBoard()
         {
-            this.StateHasChanged();
+            ChessBoardComponent.SetBoardDisability(true);
         }
 
+        public void EnableBoard()
+        {
+            ChessBoardComponent.SetBoardDisability(false);
+        }
+
+        public Position? GetSelectedPosition() => ChessBoardComponent.selectedPosition;
+
+        private async Task HandleBoardFieldClicked(Position position)
+        {
+            await OnBoardFieldClicked.InvokeAsync(position);
+        }
+
+        private async Task HandleNewGameClicked()
+        {
+            await OnLeaveGameRoomClicked.InvokeAsync();
+        }
+
+        public void Dispose()
+        {
+            GameRoomController.Dispose();
+        }
+
+        ~GameRoom() { Dispose(); }
     }
 }

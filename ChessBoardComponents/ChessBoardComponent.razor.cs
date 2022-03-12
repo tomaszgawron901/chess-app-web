@@ -1,5 +1,6 @@
 ﻿using ChessClassLib.Models;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,44 +10,82 @@ namespace ChessBoardComponents
     {
         public Position? selectedPosition;
 
-        [Parameter] public int Width { get; set; } = 8;
-        [Parameter] public int Height { get; set; } = 8;
         [Parameter] public bool IsRotated { get; set; } = false;
-        [Parameter] public PieceForView[,] Pieces { get; set; }
-
+        [Parameter] public bool IsDisabled { get; set; } = false;
         [Parameter] public EventCallback<Position> OnFieldClicked { get; set; }
-        [Parameter] public EventCallback<ChessBoardComponent> IsReady { get; set; }
 
-        protected FieldComponent[,] Fields;
+        private int Width = 0;
+        private int Height = 0;
+        private PieceForView[,] Pieces;
+        private FieldComponent[,] Fields;
 
-        protected override async Task OnInitializedAsync()
+        public void SetPieces(PieceForView[,] pieces)
         {
-            await base.OnInitializedAsync();
-            Fields = new FieldComponent[Width, Height];
+            int newWidth, newHeight;
+            if (pieces == null)
+            {
+                newWidth = 0;
+                newHeight = 0;
+                Pieces = new PieceForView[0, 0];
+            }
+            else
+            {
+                newWidth = pieces.GetLength(0);
+                newHeight = pieces.GetLength(1);
+                Pieces = pieces;
+            }
+            if(newWidth != Width || newHeight != Height)
+            {
+                Width = newWidth;
+                Height = newHeight;
+                Fields = new FieldComponent[newWidth, newHeight];
+            }
+
+            StateHasChanged();
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        public void SetBoardRotation(bool rotated = true)
         {
-            await base.OnAfterRenderAsync(firstRender);
-            if (firstRender)
+            IsRotated = rotated;
+            StateHasChanged();
+        }
+
+        public void SetBoardDisability(bool disabled = true)
+        {
+            IsDisabled = disabled;
+            StateHasChanged();
+        }
+
+        public void UnSelectAll()
+        {
+            foreach (FieldComponent field in this.Fields)
             {
-                await this.IsReady.InvokeAsync(this);
+                field.SetBorderColor(BorderColor.None);
+            }
+            selectedPosition = null;
+            StateHasChanged();
+        }
+
+        public void SelectPosition(Position position)
+        {
+            this.Fields[position.X, position.Y].SetBorderColor(BorderColor.Select);
+            this.selectedPosition = position;
+        }
+
+        public void ShowMoves(IEnumerable<Position> positions)
+        {
+            foreach (Position position in positions)
+            {
+                this.Fields[position.X, position.Y].SetBorderColor(BorderColor.Ok);
             }
         }
 
-        protected PieceForView GetPiece(int w, int h)
+        public void SetCheckMated(Position position)
         {
-            try
-            {
-                return this.Pieces[w, h];
-            }
-            catch
-            {
-                return null;
-            }
+            this.Fields[position.X, position.Y].SetBorderColor(BorderColor.Bad);
         }
 
-        protected IEnumerable<int> GetXIndexes()
+        private IEnumerable<int> GetXIndexes()
         {
             if (IsRotated)
             {
@@ -64,7 +103,7 @@ namespace ChessBoardComponents
             }
         }
 
-        protected IEnumerable<int> GetYIndexes()
+        private IEnumerable<int> GetYIndexes()
         {
             if (IsRotated)
             {
@@ -82,7 +121,7 @@ namespace ChessBoardComponents
             }
         }
 
-        protected char GetLetter(int w, int h)
+        private char GetLetter(int w, int h)
         {
             if ((IsRotated && h == Height - 1) || (!IsRotated && h == 0))
             {
@@ -91,7 +130,7 @@ namespace ChessBoardComponents
             return ' ';
         }
 
-        protected char GetNumber(int w, int h)
+        private char GetNumber(int w, int h)
         {
             if ((IsRotated && w == 0) || (!IsRotated && w == Width - 1))
             {
@@ -100,31 +139,11 @@ namespace ChessBoardComponents
             return ' ';
         }
 
-        protected async void OnFieldClick(int x, int y)
+        private async void OnFieldClick(int x, int y)
         {
-            await OnFieldClicked.InvokeAsync(new Position(x, y));
-        }
-
-        public void UnSelectAll()
-        {
-            foreach (FieldComponent field in this.Fields)
+            if (!IsDisabled)
             {
-                field.SetBorderColor(BorderColor.None);
-            }
-            this.selectedPosition = null;
-        }
-
-        public void SelectPosition(Position position)
-        {
-            this.Fields[position.X, position.Y].SetBorderColor(BorderColor.Select);
-            this.selectedPosition = position;
-        }
-
-        public void ShowMoves(IEnumerable<Position> positions)
-        {
-            foreach (Position position in positions)
-            {
-                this.Fields[position.X, position.Y].SetBorderColor(BorderColor.Ok);
+                await OnFieldClicked.InvokeAsync(new Position(x, y));
             }
         }
     }

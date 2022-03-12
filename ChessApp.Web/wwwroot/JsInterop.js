@@ -1,10 +1,8 @@
-﻿window.chessAppJsFunctions = {
-    setSelect: function (component) {
-        component.select();
-    },
+﻿export function SetSelectAndCopy(component) {
+    component.select();
+    document.execCommand("copy");
+}
 
-    setSelectAndCopy: function (component) {
-        component.select();
-        document.execCommand("copy");
-    }
+export function SetSelect(component) {
+    component.select();
 }

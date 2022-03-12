@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
 using ChessApp.Web.Services;
 using ChessClassLib.Models;
+using ChessApp.Web.Exstentions;
 
 namespace ChessApp.Web.Pages
 {
-    public partial class Index: ComponentBase
+    public partial class MainPage: ComponentBase
     {
         [Inject] protected NavigationManager AppNavigationManager { get; set; }
-        [Inject] protected GameService GameService { get; set; }
+        [Inject] protected GameHubService GameService { get; set; }
 
         protected bool isLoading { get; set; } = false;
         protected bool isError { get; set; } = false;
@@ -18,23 +19,15 @@ namespace ChessApp.Web.Pages
             isError = false;
             try
             {
-                string gameCode = await GameService.CreateNewGameRoom(gameOptions);
-                this.NavigateToGameRoom(gameCode);
+                string roomCode = await GameService.CreateNewGameRoom(gameOptions);
+                AppNavigationManager.NavigateToGameRoom(roomCode);
             }
             catch
             {
                 isError = true;
             }
-            finally
-            {
-                isLoading = false;
-                this.StateHasChanged();
-            }
-        }
-
-        private void NavigateToGameRoom(string gameCode)
-        {
-            AppNavigationManager.NavigateTo($"/game-room/{gameCode}");
+            isLoading = false;
+            StateHasChanged();
         }
     }
 }

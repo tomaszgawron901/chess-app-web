@@ -23,7 +23,13 @@
                 }
                 int h = height;
                 int w = width;
-                <FieldComponent BackgroudColor="@bgColor" LetterColor="@letterColor" TopLetter="@GetNumber(w, h)" BottomLetter="@GetLetter(w, h)" @ref=@Fields[w,h] Piece="GetPiece(w, h)" OnFieldClicked="() => { OnFieldClick(w, h); }" />
+                <FieldComponent @ref=@Fields[w,h]
+                    BackgroudColor="@bgColor" 
+                    LetterColor="@letterColor" 
+                    TopLetter="@GetNumber(w, h)" 
+                    BottomLetter="@GetLetter(w, h)" Piece="@Pieces[w, h]" 
+                    OnFieldClicked="() => { OnFieldClick(w, h); }"
+                />
             }
         </div>
     }
