@@ -1,20 +1,9 @@
 ﻿@page "/"
 
-<div class="progress" style="height: 4px">
-    @if(isLoading)
-    {
-        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-    }
-    else if(isError)
-    {
-        <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-    }
-    
-</div>
-
+<ProgressBar IsLoading="isLoading" IsError="isError" />
 <div class="card">
     <div class="card-body">
         <h1>@L["create_new_game"]</h1>
-        <GameOptionsForm IsDisabled="isLoading" OnValidSubmit="CreateNewGame"></GameOptionsForm>
+        <GameOptionsForm IsDisabled="isLoading" OnValidSubmit="CreateNewGame" />
     </div>
 </div>
