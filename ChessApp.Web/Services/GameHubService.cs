@@ -36,7 +36,7 @@ namespace ChessApp.Web.Services
 
         public string ConnectionId => hubConnection.ConnectionId;
 
-        public Task<string> CreateNewGameRoom(GameOptions gameOptions) => EnsureIsConnected()
+        public Task<string> CreateNewGameRoom(CreateGameOptions gameOptions) => EnsureIsConnected()
                 .Then(c => c.InvokeAsync<string>("CreateGameRoom", gameOptions));
 
         public Task<GameOptions> JoinGame(string roomKey) => EnsureIsConnected()

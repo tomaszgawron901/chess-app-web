@@ -13,7 +13,7 @@ namespace ChessApp.Web.Pages
         protected bool isLoading { get; set; } = false;
         protected bool isError { get; set; } = false;
 
-        protected async void CreateNewGame(GameOptions gameOptions)
+        protected async void CreateNewGame(CreateGameOptions gameOptions)
         {
             isLoading = true;
             isError = false;

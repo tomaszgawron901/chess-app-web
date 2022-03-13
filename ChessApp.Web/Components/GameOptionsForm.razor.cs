@@ -8,9 +8,9 @@ namespace ChessApp.Web.Components
 {
     public partial class GameOptionsForm: ComponentBase
     {
-        [Parameter] public GameOptions GameOptions { get; set; } = new GameOptions();
+        [Parameter] public CreateGameOptions GameOptions { get; set; } = new CreateGameOptions();
         [Parameter] public bool IsDisabled { get; set; } = false;
-        [Parameter] public EventCallback<GameOptions> OnValidSubmit { get; set; } = new EventCallback<GameOptions>();
+        [Parameter] public EventCallback<CreateGameOptions> OnValidSubmit { get; set; } = new EventCallback<CreateGameOptions>();
         [Parameter] public EventCallback OnCancel { get; set; } = new EventCallback();
 
         protected Side Side { get; set; }
