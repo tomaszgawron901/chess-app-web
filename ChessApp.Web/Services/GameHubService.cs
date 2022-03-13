@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using ChessApp.Web.Exstentions;
 using ChessApp.Web.Models;
 using ChessClassLib.Enums;
-using System;
 
 namespace ChessApp.Web.Services
 {

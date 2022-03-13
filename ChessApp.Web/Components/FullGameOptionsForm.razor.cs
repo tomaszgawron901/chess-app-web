@@ -1,5 +1,5 @@
-﻿using ChessClassLib.Enums;
-using ChessClassLib.Models;
+﻿using ChessApp.Web.Models;
+using ChessClassLib.Enums;
 using Microsoft.AspNetCore.Components;
 
 
