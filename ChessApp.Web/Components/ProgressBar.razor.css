@@ -1,0 +1,7 @@
+﻿.progress {
+    background-color: transparent;
+}
+
+:host {
+    width: 100%;
+}

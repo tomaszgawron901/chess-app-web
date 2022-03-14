@@ -148,11 +148,6 @@ namespace ChessApp.Web.Pages
 
         public Position? GetSelectedPosition() => ChessBoardComponent.selectedPosition;
 
-        private async Task HandleBoardFieldClicked(Position position)
-        {
-            await OnBoardFieldClicked.InvokeAsync(position);
-        }
-
         private async Task HandleNewGameClicked()
         {
             await OnLeaveGameRoomClicked.InvokeAsync();

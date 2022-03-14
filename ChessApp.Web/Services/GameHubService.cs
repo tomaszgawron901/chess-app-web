@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ChessApp.Web.Exstentions;
 using ChessApp.Web.Models;
 using ChessClassLib.Enums;
+using System;
 
 namespace ChessApp.Web.Services
 {
@@ -15,10 +16,10 @@ namespace ChessApp.Web.Services
     public delegate void PlayerLeftEventHandler(string roomName, string player);
     public delegate void PlayerJoinedEventHandler(string roomName, string player);
 
-    public class GameHubService
+    public class GameHubService: IAsyncDisposable
     {
         private readonly HubConnection hubConnection;
-        private string GameHubUrl { get; }
+        private readonly string GameHubUrl;
 
         public OptionsChangedEventHandler OnOptionsChanged { get; set; }
         public MovePerformedEventHandler OnMovePerformed { get; set; }
@@ -36,7 +37,7 @@ namespace ChessApp.Web.Services
 
         public string ConnectionId => hubConnection.ConnectionId;
 
-        public Task<string> CreateNewGameRoom(GameOptions gameOptions) => EnsureIsConnected()
+        public Task<string> CreateNewGameRoom(CreateGameOptions gameOptions) => EnsureIsConnected()
                 .Then(c => c.InvokeAsync<string>("CreateGameRoom", gameOptions));
 
         public Task<GameOptions> JoinGame(string roomKey) => EnsureIsConnected()
@@ -94,5 +95,8 @@ namespace ChessApp.Web.Services
                 OnPlayerJoined.Invoke(roomKey, player);
             });
         }
+
+        public ValueTask DisposeAsync() 
+            => hubConnection is null ? ValueTask.CompletedTask : hubConnection.DisposeAsync();
     }
 }

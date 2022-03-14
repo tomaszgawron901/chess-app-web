@@ -8,18 +8,18 @@ namespace ChessApp.Web.Pages
     public partial class MainPage: ComponentBase
     {
         [Inject] protected NavigationManager AppNavigationManager { get; set; }
-        [Inject] protected GameHubService GameService { get; set; }
+        [Inject] protected GameHubService GameHubService { get; set; }
 
-        protected bool isLoading { get; set; } = false;
-        protected bool isError { get; set; } = false;
+        private bool isLoading { get; set; } = false;
+        private bool isError { get; set; } = false;
 
-        protected async void CreateNewGame(GameOptions gameOptions)
+        private async void CreateNewGame(CreateGameOptions gameOptions)
         {
             isLoading = true;
             isError = false;
             try
             {
-                string roomCode = await GameService.CreateNewGameRoom(gameOptions);
+                string roomCode = await GameHubService.CreateNewGameRoom(gameOptions);
                 AppNavigationManager.NavigateToGameRoom(roomCode);
             }
             catch
