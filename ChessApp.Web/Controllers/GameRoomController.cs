@@ -128,7 +128,7 @@ namespace ChessApp.Web.Controllers
             }
         }
 
-        private void HandlePerformMove(BoardMove move, SharedClock clock1, SharedClock clock2)
+        private async void HandlePerformMove(BoardMove move, SharedClock clock1, SharedClock clock2)
         {
             var performingColor = game.CurrentPlayerColor;
             if (game.TryPerformMove(move))
@@ -139,13 +139,13 @@ namespace ChessApp.Web.Controllers
                 GameRoom.SetCurrentColor(game.CurrentPlayerColor);
                 if (ClientColor == PieceColor.Black)
                 {
-                    GameRoom.SetTimer1(clock1);
-                    GameRoom.SetTimer2(clock2);
+                    await GameRoom.SetTimer1(clock1);
+                    await GameRoom.SetTimer2(clock2);
                 }
                 else
                 {
-                    GameRoom.SetTimer1(clock2);
-                    GameRoom.SetTimer2(clock1);
+                    await GameRoom.SetTimer1(clock2);
+                    await GameRoom.SetTimer2(clock1);
                 }
                 if (game.GameState == GameState.Ended)
                 {

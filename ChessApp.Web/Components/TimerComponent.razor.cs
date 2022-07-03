@@ -8,18 +8,17 @@ namespace ChessApp.Web.Components
 {
     public partial class TimerComponent: ComponentBase, IDisposable
     {
-        private CancellationTokenSource cts;
-        public string timeString { get; private set; }
-        public int time { get; private set; }
+        private CancellationTokenSource? _cts;
+        private Task? _timerTask;
+        
+        protected string timeString { get; private set; }
+        public TimeSpan time { get; private set; }
         public int frequency { get; private set; }
-
-        public bool isGoing { get; private set; }
-
+        
         public TimerComponent()
         {
-            frequency = 1000;
-            timeString = "00:00";
-            isGoing = false;
+            time = TimeSpan.Zero;
+            timeString = TimeToString(time);
         }
 
         private void SetTimeString(string timeString)
@@ -28,64 +27,93 @@ namespace ChessApp.Web.Components
             StateHasChanged();
         }
 
-        private void StartClock()
+        public void StartClock()
         {
-            cts = new CancellationTokenSource();
-            var token = cts.Token;
-            Task.Run(async () => {
-                int rest = time % frequency;
+            _cts = new CancellationTokenSource();
+            var token = _cts.Token;
+            _timerTask = Task.Run(async () => {
+                frequency = time >= TimeSpan.FromSeconds(10) ? 1000 : 100;
+                int rest = (int)time.TotalMilliseconds % frequency;
                 await Task.Delay(rest, token);
                 if (token.IsCancellationRequested) { return; }
+                SetTime(time - TimeSpan.FromMilliseconds(rest));
 
-                SetTime(time - rest);
-                while (time > 0)
+                PeriodicTimer timer;
+                if (time >= TimeSpan.FromSeconds(10))
                 {
-                    await Task.Delay(frequency, token);
-                    if (token.IsCancellationRequested) { return; }
-                    SetTime(time - frequency);
+                    frequency = 1000;
+                    timer = new PeriodicTimer(TimeSpan.FromMilliseconds(frequency));
+                    try
+                    {
+                        while (time >= TimeSpan.FromSeconds(10) && await timer.WaitForNextTickAsync(token))
+                        {
+                            SetTime(time - TimeSpan.FromMilliseconds(frequency));
+                        }
+                    }
+                    catch (OperationCanceledException) { }
+                    timer.Dispose();
                 }
-                SetTime(0);
+
+                frequency = 100;
+                timer = new PeriodicTimer(TimeSpan.FromMilliseconds(frequency));
+                try
+                {
+                    while (time >= TimeSpan.Zero && await timer.WaitForNextTickAsync(token))
+                    {
+                        SetTime(time - TimeSpan.FromMilliseconds(frequency));
+                    }
+                }
+                catch (OperationCanceledException) { }
+                timer.Dispose();
+
+                SetTime(TimeSpan.Zero);
+                
             }, token);
-            isGoing = true;
         }
+        
+        
 
-        private void StopClock()
+        public async Task StopClock()
         {
-            if(isGoing)
-            {
-                cts.Cancel();
-                cts.Dispose();
-                isGoing = false;
-            }
+            if (_timerTask is null || _timerTask.IsCompleted) { return; }
+
+            _cts?.Cancel();
+            await _timerTask;
+            _cts?.Dispose();
         }
 
-        private void SetTime(int time)
+        private void SetTime(TimeSpan time)
         {
             this.time = time;
             SetTimeString(TimeToString(this.time));
         }
-
-
-        public void SetClock(SharedClock clock)
+        
+        public async Task SetClock(SharedClock clock)
         {
-            StopClock();
-            SetTime((int)clock.Time);
+            await StopClock();
+            SetTime(TimeSpan.FromMilliseconds(clock.Time));
             if (clock.Started)
             {
                 StartClock();
             }
         }
 
-        private static string TimeToString(int time)
+        private static string TimeToString(TimeSpan time)
         {
-            int secs = time / 1000;
-            int mins = secs / 60;
-            return $"{mins % 100 / 10}{mins % 10}:{secs % 60 / 10}{secs % 10}";
+            if (time >= TimeSpan.FromSeconds(10))
+            {
+                return time.ToString(@"mm\:ss");
+            }
+            else
+            {
+                return time.ToString(@"s\.f");
+            }
+            
         }
 
         public void Dispose()
         {
-            cts?.Dispose();
+            _cts?.Dispose();
         }
     }
 }
