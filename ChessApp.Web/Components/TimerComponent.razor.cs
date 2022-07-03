@@ -86,10 +86,10 @@ namespace ChessApp.Web.Components
         {
             try
             {
-                if (time >= TimeSpan.FromSeconds(FormatPartitionInMs))
+                if (time >= TimeSpan.FromMilliseconds(FormatPartitionInMs))
                 {
                     await AlignTimeToWholeAndDisplay(_above10secPeriod, _above10secFormat, token);
-                    await CountDownTimeAndDisplayPeriodicaly(_above10secPeriod, _above10secFormat, TimeSpan.FromSeconds(10), token);
+                    await CountDownTimeAndDisplayPeriodicaly(_above10secPeriod, _above10secFormat, TimeSpan.FromMilliseconds(FormatPartitionInMs), token);
                 }
                 else
                 {
