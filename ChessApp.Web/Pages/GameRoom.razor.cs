@@ -62,8 +62,8 @@ namespace ChessApp.Web.Pages
             FullGameOptionsForm.SetCurrentPlayer(color);
         }
 
-        public void SetTimer1(SharedClock clock) => timer1.SetClock(clock);
-        public void SetTimer2(SharedClock clock) => timer2.SetClock(clock);
+        public Task SetTimer1(SharedClock clock) => timer1.SetClock(clock);
+        public Task SetTimer2(SharedClock clock) => timer2.SetClock(clock);
 
         public void NotifyPieceMoved(PieceColor color, BoardMove move)
         {

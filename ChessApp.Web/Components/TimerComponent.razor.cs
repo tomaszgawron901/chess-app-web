@@ -8,18 +8,25 @@ namespace ChessApp.Web.Components
 {
     public partial class TimerComponent: ComponentBase, IDisposable
     {
-        private CancellationTokenSource cts;
-        public string timeString { get; private set; }
-        public int time { get; private set; }
-        public int frequency { get; private set; }
+        private readonly static int _above10secPeriod = 1000;
+        private readonly static int _below10secPeriod = 100;
+        private readonly static string _above10secFormat = @"mm\:ss";
+        private readonly static string _below10secFormat = @"s\.f";
 
-        public bool isGoing { get; private set; }
+        public int FormatPartitionInMs { get; init; } = 10_000;
 
+        private CancellationTokenSource? _cts;
+        private Task? _timerTask;
+        
+        protected string timeString { get; private set; }
+        public TimeSpan time { get; private set; }
+        
         public TimerComponent()
         {
-            frequency = 1000;
-            timeString = "00:00";
-            isGoing = false;
+            time = TimeSpan.Zero;
+            timeString = time.ToString(_below10secFormat);
+            
+            
         }
 
         private void SetTimeString(string timeString)
@@ -28,64 +35,82 @@ namespace ChessApp.Web.Components
             StateHasChanged();
         }
 
-        private void StartClock()
+        public async Task SetClock(SharedClock clock)
         {
-            cts = new CancellationTokenSource();
-            var token = cts.Token;
-            Task.Run(async () => {
-                int rest = time % frequency;
-                await Task.Delay(rest, token);
-                if (token.IsCancellationRequested) { return; }
-
-                SetTime(time - rest);
-                while (time > 0)
-                {
-                    await Task.Delay(frequency, token);
-                    if (token.IsCancellationRequested) { return; }
-                    SetTime(time - frequency);
-                }
-                SetTime(0);
-            }, token);
-            isGoing = true;
-        }
-
-        private void StopClock()
-        {
-            if(isGoing)
-            {
-                cts.Cancel();
-                cts.Dispose();
-                isGoing = false;
-            }
-        }
-
-        private void SetTime(int time)
-        {
-            this.time = time;
-            SetTimeString(TimeToString(this.time));
-        }
-
-
-        public void SetClock(SharedClock clock)
-        {
-            StopClock();
-            SetTime((int)clock.Time);
+            await StopClock();
+            SetTime(TimeSpan.FromMilliseconds(clock.Time), clock.Time >= FormatPartitionInMs ? _above10secFormat : _below10secFormat);
             if (clock.Started)
             {
-                StartClock();
+                _cts = new CancellationTokenSource();
+                _timerTask = CountDownTime(_cts.Token);
+            }
+        }
+        
+        public async Task StopClock()
+        {
+            if (_timerTask is null || _timerTask.IsCompleted) { return; }
+
+            _cts?.Cancel();
+            await _timerTask;
+            _cts?.Dispose();
+        }
+
+        private async Task AlignTimeToWholeAndDisplay(int period, string format, CancellationToken token = default)
+        {
+            int rest = (int)time.TotalMilliseconds % period;
+            await Task.Delay(rest, token);
+            SetTime(time - TimeSpan.FromMilliseconds(rest), format);
+        }
+
+        private async Task CountDownTimeAndDisplayPeriodicaly(int period, string format, TimeSpan endTime, CancellationToken token = default)
+        {
+            PeriodicTimer timer = new(TimeSpan.FromMilliseconds(period));
+            try
+            {
+                while (time >= endTime && await timer.WaitForNextTickAsync(token))
+                {
+                    SetTime(time - TimeSpan.FromMilliseconds(period), format);
+                }
+            }
+            catch(OperationCanceledException ocex)
+            {
+                throw ocex;
+            }
+            finally
+            {
+                timer.Dispose();
             }
         }
 
-        private static string TimeToString(int time)
+        private async Task CountDownTime(CancellationToken token = default(CancellationToken))
         {
-            int secs = time / 1000;
-            int mins = secs / 60;
-            return $"{mins % 100 / 10}{mins % 10}:{secs % 60 / 10}{secs % 10}";
+            try
+            {
+                if (time >= TimeSpan.FromSeconds(FormatPartitionInMs))
+                {
+                    await AlignTimeToWholeAndDisplay(_above10secPeriod, _above10secFormat, token);
+                    await CountDownTimeAndDisplayPeriodicaly(_above10secPeriod, _above10secFormat, TimeSpan.FromSeconds(10), token);
+                }
+                else
+                {
+                    await AlignTimeToWholeAndDisplay(_below10secPeriod, _below10secFormat, token);
+                }
+                await CountDownTimeAndDisplayPeriodicaly(_below10secPeriod, _below10secFormat, TimeSpan.Zero, token);
+                SetTime(TimeSpan.Zero, _below10secFormat);
+                
+            }
+            catch(OperationCanceledException){}
         }
 
+        private void SetTime(TimeSpan time, string format)
+        {
+            this.time = time;
+            SetTimeString(this.time.ToString(format));
+        }
+        
         public void Dispose()
         {
-            cts?.Dispose();
+            _cts?.Dispose();
         }
     }
 }
